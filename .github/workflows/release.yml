@@ -1,0 +1,280 @@
+name: Release & Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prerelease
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8'
+
+jobs:
+  check-version:
+    name: Check Version Change
+    runs-on: ubuntu-latest
+    outputs:
+      version-changed: ${{ steps.version-check.outputs.changed }}
+      current-version: ${{ steps.version-check.outputs.version }}
+      should-release: ${{ steps.should-release.outputs.release }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if version changed
+        id: version-check
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          
+          # Get previous commit version
+          git checkout HEAD~1 -- package.json 2>/dev/null || echo "No previous version"
+          PREVIOUS_VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo "0.0.0")
+          git checkout HEAD -- package.json
+          
+          if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            echo "Version changed from $PREVIOUS_VERSION to $CURRENT_VERSION"
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            echo "Version unchanged: $CURRENT_VERSION"
+          fi
+
+      - name: Should release
+        id: should-release
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] || [ "${{ steps.version-check.outputs.changed }}" == "true" ]; then
+            echo "release=true" >> $GITHUB_OUTPUT
+          else
+            echo "release=false" >> $GITHUB_OUTPUT
+          fi
+
+  automated-release:
+    name: Automated Release
+    runs-on: ubuntu-latest
+    needs: check-version
+    if: github.event_name == 'workflow_dispatch'
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run release
+        run: |
+          case "${{ github.event.inputs.release-type }}" in
+            "patch")
+              pnpm run release:patch
+              ;;
+            "minor")
+              pnpm run release:minor
+              ;;
+            "major") 
+              pnpm run release:major
+              ;;
+            "prerelease")
+              pnpm run release:pre
+              ;;
+            *)
+              pnpm run release
+              ;;
+          esac
+
+      - name: Push changes
+        run: |
+          git push --follow-tags origin main
+
+  build-and-test:
+    name: Build & Test for Release
+    runs-on: ubuntu-latest
+    needs: [check-version]
+    if: needs.check-version.outputs.should-release == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run full test suite
+        run: |
+          pnpm run lint
+          pnpm run test:coverage
+          pnpm run test:security
+          pnpm run test:performance
+          pnpm run security-audit
+
+      - name: Build package
+        run: pnpm run build
+
+      - name: Verify fee accounts
+        run: pnpm run verify-fee-accounts
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-dist
+          path: dist/
+          retention-days: 30
+
+  publish-npm:
+    name: Publish to NPM
+    runs-on: ubuntu-latest
+    needs: [check-version, build-and-test]
+    if: needs.check-version.outputs.should-release == 'true'
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-dist
+          path: dist/
+
+      - name: Check if version is published
+        id: check-published
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          PUBLISHED_VERSION=$(npm view @maikers/mainframe-sdk version 2>/dev/null || echo "0.0.0")
+          
+          if [ "$CURRENT_VERSION" != "$PUBLISHED_VERSION" ]; then
+            echo "should-publish=true" >> $GITHUB_OUTPUT
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+            echo "Will publish version $CURRENT_VERSION (currently published: $PUBLISHED_VERSION)"
+          else
+            echo "should-publish=false" >> $GITHUB_OUTPUT
+            echo "Version $CURRENT_VERSION already published"
+          fi
+
+      - name: Publish to npm
+        if: steps.check-published.outputs.should-publish == 'true'
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        if: steps.check-published.outputs.should-publish == 'true'
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.check-published.outputs.version }}
+          release_name: Release v${{ steps.check-published.outputs.version }}
+          draft: false
+          prerelease: ${{ contains(steps.check-published.outputs.version, '-') }}
+          body: |
+            ## 🚀 Release v${{ steps.check-published.outputs.version }}
+            
+            ### Installation
+            ```bash
+            npm install @maikers/mainframe-sdk@${{ steps.check-published.outputs.version }}
+            ```
+            
+            ### What's Changed
+            See [CHANGELOG.md](https://github.com/maikershq/maikers-mainframe-sdk/blob/main/CHANGELOG.md) for detailed changes.
+            
+            ### Resources
+            - 📚 [Documentation](https://docs.maikers.com)
+            - 🔧 [API Reference](https://github.com/maikershq/maikers-mainframe-sdk/blob/main/docs/api.md)
+            - 🔒 [Security Guide](https://github.com/maikershq/maikers-mainframe-sdk/blob/main/docs/security.md)
+            - 💬 [Discord Community](https://discord.gg/maikers)
+            
+            ### Verification
+            ```bash
+            # Verify package integrity
+            npm audit @maikers/mainframe-sdk
+            
+            # Check package size
+            npm info @maikers/mainframe-sdk dist.size
+            ```
+
+  notify-success:
+    name: Notify Release Success
+    runs-on: ubuntu-latest
+    needs: [publish-npm, check-version]
+    if: success() && needs.check-version.outputs.should-release == 'true'
+    
+    steps:
+      - name: Notify Discord
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "✅ Mainframe SDK v${{ needs.check-version.outputs.current-version }} Released!"
+          description: |
+            **Successfully published to npm!**
+            
+            📦 **Package:** [@maikers/mainframe-sdk](https://www.npmjs.com/package/@maikers/mainframe-sdk)
+            🏷️ **Version:** v${{ needs.check-version.outputs.current-version }}
+            📚 **Docs:** [docs.maikers.com](https://docs.maikers.com)
+          color: 0x00ff00
