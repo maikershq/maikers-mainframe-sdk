@@ -1,0 +1,43 @@
+# Source files (included via package.json files field)
+# src/
+
+# Development files
+__tests__/
+*.test.ts
+*.spec.ts
+jest.config.js
+jest.setup.js  
+jest.mocks.js
+
+# Configuration
+tsconfig.json
+rollup.config.js
+eslint.config.mjs
+
+# Development examples
+examples/
+
+# Documentation
+*.md
+!README.md
+
+# Internal documentation that shouldn't be published
+NPM_PUBLISHING_SECURITY_GUIDE.md
+
+# Build tools
+.github/
+.vscode/
+
+# Logs and caches  
+logs/
+*.log
+coverage/
+.nyc_output
+node_modules/
+
+# Environment
+.env*
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,76 @@
+{
+  "types": [
+    {
+      "type": "feat",
+      "section": "Features"
+    },
+    {
+      "type": "fix", 
+      "section": "Bug Fixes"
+    },
+    {
+      "type": "security",
+      "section": "Security"
+    },
+    {
+      "type": "perf",
+      "section": "Performance"
+    },
+    {
+      "type": "docs",
+      "section": "Documentation"
+    },
+    {
+      "type": "style",
+      "hidden": true
+    },
+    {
+      "type": "refactor",
+      "section": "Code Refactoring"
+    },
+    {
+      "type": "test",
+      "section": "Tests"
+    },
+    {
+      "type": "chore",
+      "hidden": true
+    },
+    {
+      "type": "build",
+      "section": "Build System"
+    },
+    {
+      "type": "ci",
+      "section": "Continuous Integration"
+    }
+  ],
+  "commitUrlFormat": "https://github.com/maikershq/maikers-mainframe-sdk/commit/{{hash}}",
+  "compareUrlFormat": "https://github.com/maikershq/maikers-mainframe-sdk/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "https://github.com/maikershq/maikers-mainframe-sdk/issues/{{id}}",
+  "userUrlFormat": "https://github.com/{{user}}",
+  "releaseCommitMessageFormat": "chore(release): {{currentTag}}",
+  "skip": {
+    "bump": false,
+    "changelog": false,
+    "commit": false,
+    "tag": false
+  },
+  "tagPrefix": "v",
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ],
+  "packageFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ],
+  "scripts": {
+    "prebump": "pnpm run test && pnpm run lint && pnpm run security-audit",
+    "postbump": "pnpm run build"
+  }
+}
