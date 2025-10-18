@@ -1,3 +1,9 @@
+## <small>1.0.1 (2025-10-18)</small>
+
+* feat: don’t blame me, blame the mainframe. ([fcc9144](https://github.com/MaikersHQ/maikers-mainframe-sdk/commit/fcc9144))
+
+
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

@@ -1,6 +1,6 @@
 {
   "name": "@maikers/mainframe-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "TypeScript SDK for Mainframe protocol - Powering the agentic economy through Agent-NFTs with enterprise-grade security, performance optimization, and built-in revenue sharing on Solana",
   "main": "dist/cjs/index.js",
@@ -78,7 +78,7 @@
     "check-version": "node scripts/check-version.js",
     "release-script": "node scripts/release.js",
     "release-patch": "node scripts/release.js patch",
-    "release-minor": "node scripts/release.js minor", 
+    "release-minor": "node scripts/release.js minor",
     "release-major": "node scripts/release.js major",
     "release-pre": "node scripts/release.js prerelease",
     "postversion": "git push && git push --tags && pnpm publish",
