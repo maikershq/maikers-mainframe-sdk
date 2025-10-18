@@ -1,0 +1,13 @@
+{
+  "moderate": true,
+  "high": true,
+  "critical": true,
+  "report-type": "full",
+  "advisories": [],
+  "allowlist": [],
+  "skip-dev": false,
+  "path-whitelist": [],
+  "show-not-found": false,
+  "retry": 3,
+  "timeout": 30000
+}
