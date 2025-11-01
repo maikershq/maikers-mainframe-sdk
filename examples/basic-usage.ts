@@ -74,11 +74,19 @@ async function basicExample() {
       throw new Error('NFT_MINT_ADDRESS environment variable required');
     }
 
-    const result = await sdk.createAgent(nftMint, agentConfig);
+    // Optional: Include affiliate for revenue sharing
+    const result = await sdk.createAgent(nftMint, agentConfig, {
+      affiliate: process.env.AFFILIATE_WALLET,  // Optional: Wallet that receives commission
+      referrer: process.env.REFERRER_WALLET     // Optional: For multi-level rewards
+    });
+    
     console.log(`✅ Agent created successfully!`);
     console.log(`📎 Agent Account: ${result.agentAccount}`);
     console.log(`📎 Transaction: ${result.signature}`);
     console.log(`📎 Metadata URI: ${result.metadataUri}`);
+    if (process.env.AFFILIATE_WALLET) {
+      console.log(`🤝 Affiliate will receive tier-based commission`);
+    }
 
     // Listen for agent deployment
     console.log('👂 Listening for agent deployment...');

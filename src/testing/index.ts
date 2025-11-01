@@ -4,7 +4,7 @@
  * Provides mock services, fixtures, and test helpers for SDK testing
  */
 
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey, Keypair } from '@solana/web3.js';
 import { MainframeSDK, MainframeSDKFactory } from '../sdk';
 import { MockStorageService } from '../services/storage';
 import { MockWalletService } from '../services/wallet';
@@ -16,6 +16,13 @@ import type {
   EncryptedMetadata,
   StorageResult
 } from '../types';
+
+// Generate deterministic test keypairs for consistent testing
+const generateTestKeypair = (seed: number): Keypair => {
+  const seedArray = new Uint8Array(32);
+  seedArray[0] = seed;
+  return Keypair.fromSeed(seedArray);
+};
 
 // ============================================================================
 // Mock SDK
@@ -30,8 +37,8 @@ export class MockMainframeSDK extends MainframeSDK {
     const mockConfig: MainframeConfig = {
       solanaNetwork: 'devnet',
       rpcEndpoint: 'https://api.devnet.solana.com',
-      programId: 'MockProgramId1111111111111111111111111111',
-      protocolWallet: 'MockProtocol111111111111111111111111111111',
+      programId: generateTestKeypair(1).publicKey.toBase58(),
+      protocolWallet: generateTestKeypair(2).publicKey.toBase58(),
       storage: {
         arweave: { gateway: 'https://arweave.net' }
       },
@@ -134,9 +141,9 @@ export class TestFixtures {
    */
   static createAgentAccountData(overrides: Partial<AgentAccountData> = {}): AgentAccountData {
     return {
-      nftMint: 'TestNFTMint111111111111111111111111111111',
-      owner: 'TestOwner1111111111111111111111111111111',
-      collectionMint: 'TestCollection11111111111111111111111111',
+      nftMint: generateTestKeypair(10).publicKey.toBase58(),
+      owner: generateTestKeypair(11).publicKey.toBase58(),
+      collectionMint: generateTestKeypair(12).publicKey.toBase58(),
       metadataUri: 'ipfs://QmTestMetadataHash',
       status: 'Active',
       activatedAt: Date.now() - 86400000, // 1 day ago
@@ -150,15 +157,19 @@ export class TestFixtures {
    * Generate mock encrypted metadata
    */
   static createEncryptedMetadata(overrides: Partial<EncryptedMetadata> = {}): EncryptedMetadata {
+    const nftMint = generateTestKeypair(10).publicKey.toBase58();
+    const owner = generateTestKeypair(11).publicKey.toBase58();
+    const protocol = generateTestKeypair(2).publicKey.toBase58();
+    
     return {
       ver: 1,
       aead: 'xchacha20poly1305-ietf',
-      ad: 'mint:TestNFTMint111111111111111111111111111111',
+      ad: `mint:${nftMint}`,
       nonce: 'base64-encoded-nonce',
       ciphertext: 'base64-encoded-ciphertext',
       keyring: {
-        'TestOwner1111111111111111111111111111111': 'base64:encrypted-key-for-owner',
-        'MockProtocol111111111111111111111111111111': 'base64:encrypted-key-for-protocol'
+        [owner]: 'base64:encrypted-key-for-owner',
+        [protocol]: 'base64:encrypted-key-for-protocol'
       },
       timestamp: Date.now(),
       version: '1.0.0',
@@ -185,19 +196,17 @@ export class TestFixtures {
   }
 
   /**
-   * Generate random Solana address
+   * Generate random Solana address (with valid Ed25519 key)
    */
   static randomAddress(): string {
-    return new PublicKey(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)).toBase58();
+    return Keypair.generate().publicKey.toBase58();
   }
 
   /**
-   * Generate sequential test addresses
+   * Generate sequential test addresses (valid Solana public keys with Ed25519 keys)
    */
   static testAddress(index: number): string {
-    const baseKey = 'Test000000000000000000000000000000000000';
-    const indexStr = index.toString().padStart(3, '0');
-    return baseKey.substring(0, baseKey.length - 3) + indexStr;
+    return generateTestKeypair(index + 100).publicKey.toBase58();
   }
 }
 

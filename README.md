@@ -61,13 +61,13 @@ const result = await sdk.createAgent(nftMint, {
 
 ## Revenue Sharing
 
-Earn **up to 50% commission** on every agent activation:
+Earn commission on every agent activation through the **advanced affiliate system**:
 
 ```typescript
 // Create agent with affiliate revenue
 const result = await sdk.createAgent(nftMint, agentConfig, {
-  seller: 'YOUR_WALLET_ADDRESS',
-  affiliateBps: 2500  // 25% commission
+  affiliate: 'YOUR_WALLET_ADDRESS',
+  referrer: 'OPTIONAL_REFERRER_ADDRESS'  // For multi-level rewards
 });
 
 // Track earnings
@@ -76,10 +76,23 @@ sdk.events.onAffiliatePaid((event) => {
 });
 ```
 
-| Monthly Referrals | Revenue (25%) | Revenue (50%) |
-|------------------|---------------|---------------|
-| 100 agents | **1.25 SOL** | **2.5 SOL** |
-| 1,000 agents | **12.5 SOL** | **25 SOL** |
+### Affiliate Tiers & Commission Rates
+
+| Tier | Sales Required | Commission Rate | + Streak Bonus |
+|------|----------------|-----------------|----------------|
+| 🥉 Bronze | 0-99 | **15%** | up to +15% |
+| 🥈 Silver | 100-499 | **20%** | up to +15% |
+| 🥇 Gold | 500-1,999 | **30%** | up to +15% |
+| 💎 Platinum | 2,000-9,999 | **40%** | up to +15% |
+| 💎💎 Diamond | 10,000+ | **50%** | up to +15% |
+
+**Features:**
+- ✅ Permissionless participation - no registration required
+- ✅ Auto-initialize on first commission
+- ✅ Tier progression based on sales
+- ✅ Multi-level referrals (earn from your referrals' sales)
+- ✅ Milestone bonuses from 0.1 SOL to 1000 SOL
+- ✅ Instant on-chain payouts
 
 **[Affiliate Program Details →](docs/affiliate-program.md)**
 

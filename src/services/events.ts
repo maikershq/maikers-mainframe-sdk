@@ -766,10 +766,10 @@ export class MockEventService extends EventService {
   private eventTimer?: NodeJS.Timeout | undefined;
 
   constructor(config: MainframeConfig, connection: Connection) {
-    // CRITICAL: Prevent instantiation in production AND development
+    // Testing environment only
     if (process.env.NODE_ENV !== 'test') {
       throw new Error(
-        'SECURITY ERROR: MockEventService can ONLY be instantiated in testing environment (NODE_ENV=test). ' +
+        'MockEventService can only be instantiated in testing environment (NODE_ENV=test). ' +
         'Mock services are not allowed in development or production.'
       );
     }

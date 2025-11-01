@@ -438,7 +438,8 @@ console.log("✅ Agent configuration updated");
 ```typescript
 const newOwner = new PublicKey("NEW_OWNER_WALLET_ADDRESS");
 
-// Both current owner and new owner must sign
+// One-sided operation: only new NFT owner signs and pays to claim control
+// The connected wallet must own the NFT to successfully claim the agent
 await sdk.transferAgent(agentAccount, newOwner);
 
 console.log("✅ Agent ownership transferred to:", newOwner.toString());

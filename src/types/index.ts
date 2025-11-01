@@ -198,6 +198,7 @@ export interface AgentNFTMetadata {
  * Verified NFT collection data
  */
 export interface VerifiedNFT {
+  mint: string;
   name: string;
   symbol: string;
   description: string;
@@ -283,7 +284,7 @@ export type AgentStatus = 'Active' | 'Paused' | 'Closed';
 
 export interface FeeStructure {
   createAgent: number;
-  updateConfig: number;
+  updateAgentConfig: number;
   transferAgent: number;
   pauseAgent: number;
   closeAgent: number;
@@ -298,8 +299,29 @@ export interface PartnerCollection {
   addedAt: number;
 }
 
+export interface AffiliateAccount {
+  affiliate: string;
+  totalSales: number;
+  totalRevenue: number;
+  referralCount: number;
+  referreeSales: number;
+  referreeRevenue: number;
+  referrer?: string;
+  createdAt: number;
+  bonusBps: number;
+  bump: number;
+}
+
+export interface AffiliateTier {
+  name: 'Bronze' | 'Silver' | 'Gold' | 'Platinum' | 'Diamond';
+  threshold: number;
+  commissionRate: number;
+}
+
 export interface ProtocolConfigData {
   authority: string;
+  manager: string;
+  genesisCollectionMint: string;
   fees: FeeStructure;
   protocolTreasury: string;
   validatorTreasury: string;
@@ -310,6 +332,25 @@ export interface ProtocolConfigData {
   paused: boolean;
   totalAgents: number;
   totalPartners: number;
+  maxPartnerCollections: number;
+  maxAffiliateBps: number;
+  pendingAuthority?: string;
+}
+
+export interface TreasuryParams {
+  protocolTreasury: string;
+  validatorTreasury: string;
+  networkTreasury: string;
+  protocolTreasuryBps: number;
+  validatorTreasuryBps: number;
+  networkTreasuryBps: number;
+}
+
+export interface ConfigParams {
+  genesisCollectionMint: string;
+  maxPartnerCollections: number;
+  maxAffiliateBps: number;
+  manager: string;
 }
 
 // ============================================================================

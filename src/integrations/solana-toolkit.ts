@@ -216,38 +216,34 @@ export class ToolkitMainframeSDK extends MainframeSDK {
     }
   }
 
-  // Helper method stubs (would be implemented based on actual program interface)
+  // Instruction builders - Use AnchorMainframeSDK for production-ready instruction building
   private async buildCreateAgentInstruction(nftMint: string, config: AgentConfig): Promise<TransactionInstruction> {
-    // This would build the actual instruction using the program interface
-    return new TransactionInstruction({
-      keys: [],
-      programId: new PublicKey(this.config.programId),
-      data: Buffer.from('mock_create_agent_data')
-    });
+    throw ErrorFactory.internalError(
+      'Direct instruction building not implemented in ToolkitMainframeSDK. ' +
+      'Use AnchorMainframeSDK or WalletAdapterMainframeSDK for production use. ' +
+      'This integration is for custom transaction builders only.'
+    );
   }
 
   private async buildUpdateAgentInstruction(agentAccount: string, config: AgentConfig): Promise<TransactionInstruction> {
-    return new TransactionInstruction({
-      keys: [],
-      programId: new PublicKey(this.config.programId),
-      data: Buffer.from('mock_update_agent_data')
-    });
+    throw ErrorFactory.internalError(
+      'Direct instruction building not implemented in ToolkitMainframeSDK. ' +
+      'Use AnchorMainframeSDK or WalletAdapterMainframeSDK for production use.'
+    );
   }
 
   private async buildPauseAgentInstruction(agentAccount: string): Promise<TransactionInstruction> {
-    return new TransactionInstruction({
-      keys: [],
-      programId: new PublicKey(this.config.programId),
-      data: Buffer.from('mock_pause_agent_data')
-    });
+    throw ErrorFactory.internalError(
+      'Direct instruction building not implemented in ToolkitMainframeSDK. ' +
+      'Use AnchorMainframeSDK or WalletAdapterMainframeSDK for production use.'
+    );
   }
 
   private async buildCloseAgentInstruction(agentAccount: string): Promise<TransactionInstruction> {
-    return new TransactionInstruction({
-      keys: [],
-      programId: new PublicKey(this.config.programId),
-      data: Buffer.from('mock_close_agent_data')
-    });
+    throw ErrorFactory.internalError(
+      'Direct instruction building not implemented in ToolkitMainframeSDK. ' +
+      'Use AnchorMainframeSDK or WalletAdapterMainframeSDK for production use.'
+    );
   }
 
   private deriveAgentAccount(nftMint: PublicKey): PublicKey {

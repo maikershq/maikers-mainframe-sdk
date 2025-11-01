@@ -1,8 +1,7 @@
 /**
  * Development-only SDK extensions
  * 
- * Contains test methods and development utilities that should NEVER
- * be available in production builds.
+ * Contains test methods and development utilities for testing environments only.
  */
 
 import { MainframeSDK } from '../sdk';
@@ -19,10 +18,10 @@ import type { WalletInfo, AgentConfig } from '../types';
 export class TestingSDK extends MainframeSDK {
   
   constructor(config: any) {
-    // CRITICAL: Prevent usage in production AND development
+    // Testing environment only
     if (process.env.NODE_ENV !== 'test') {
       throw ErrorFactory.internalError(
-        'SECURITY ERROR: TestingSDK can ONLY be used in testing environment (NODE_ENV=test). ' +
+        'TestingSDK can only be used in testing environment (NODE_ENV=test). ' +
         'This class contains test methods that are not allowed in development or production.'
       );
     }
@@ -31,7 +30,7 @@ export class TestingSDK extends MainframeSDK {
   }
 
   /**
-   * Test encryption/decryption flow (UNIT TESTING ONLY)
+   * Test encryption/decryption flow
    */
   async testEncryptionFlow(): Promise<void> {
     this.ensureWalletConnected();
@@ -58,7 +57,7 @@ export class TestingSDK extends MainframeSDK {
   }
 
   /**
-   * Test access control with different wallet types (UNIT TESTING ONLY)
+   * Test access control with different wallet types
    */
   async testAccessControl(
     mintAddress: string,
@@ -99,7 +98,7 @@ export class TestingSDK extends MainframeSDK {
   }
 
   /**
-   * Run full PoC demonstration (UNIT TESTING ONLY)
+   * Run full PoC demonstration
    */
   async runPoCDemo(): Promise<void> {
     this.ensureWalletConnected();
@@ -150,7 +149,7 @@ export class TestingSDK extends MainframeSDK {
   }
 
   /**
-   * Generate test wallet for unauthorized access testing (UNIT TESTING ONLY)
+   * Generate test wallet for unauthorized access testing
    */
   private generateTestWallet(): any {
     const { Keypair } = require('@solana/web3.js');
@@ -165,7 +164,7 @@ export class TestingSDK extends MainframeSDK {
   }
 
   /**
-   * Get protocol wallet info (UNIT TESTING ONLY)
+   * Get protocol wallet info
    */
   private async getProtocolWalletInfo(): Promise<any> {
     // Protocol wallet configuration from environment or config
@@ -191,12 +190,12 @@ export class TestingSDKFactory {
   /**
    * Create testing SDK with additional test methods
    * 
-   * SECURITY WARNING: Only use in unit testing environments (NODE_ENV=test)
+   * For use in unit testing environments only (NODE_ENV=test)
    */
   static createTestingSDK(config: any): TestingSDK {
     if (process.env.NODE_ENV !== 'test') {
       throw ErrorFactory.internalError(
-        'SECURITY ERROR: TestingSDK can ONLY be created in testing environment (NODE_ENV=test). ' +
+        'TestingSDK can only be created in testing environment (NODE_ENV=test). ' +
         'This is not allowed in development or production.'
       );
     }
@@ -205,7 +204,7 @@ export class TestingSDKFactory {
   }
 
   /**
-   * Create PoC demonstration SDK (UNIT TESTING ONLY)
+   * Create PoC demonstration SDK
    */
   static createPoCSDK(config?: any): TestingSDK {
     const defaultConfig = {

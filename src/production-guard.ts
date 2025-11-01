@@ -7,7 +7,7 @@
 export function ensureTestingOnly(service: string): void {
   if (process.env.NODE_ENV !== 'test') {
     throw new Error(
-      `SECURITY ERROR: ${service} can ONLY be used in unit testing environment (NODE_ENV=test). ` +
+      `${service} can only be used in unit testing environment (NODE_ENV=test). ` +
       'Mock services are not allowed in development or production. Use real services instead.'
     );
   }

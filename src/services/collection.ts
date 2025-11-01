@@ -161,7 +161,7 @@ export class CollectionService {
         external_url: 'https://mainframe.maikers.com',
         secure: secureBlock,
         based_on: {
-          mint: 'mock_original_mint', // Would be actual NFT mint
+          mint: verifiedNFT.mint,
           collection: verifiedNFT.verified_collection.key,
           original_name: verifiedNFT.name
         },
@@ -378,7 +378,11 @@ export class CollectionService {
    * Load sample verified NFT for testing
    */
   loadSampleVerifiedNFT(): VerifiedNFT {
+    const { Keypair } = require('@solana/web3.js');
+    const sampleMintKeypair = Keypair.fromSeed(new Uint8Array(32).fill(99));
+    
     return {
+      mint: sampleMintKeypair.publicKey.toBase58(),
       name: 'Mad Lad #1234',
       symbol: 'MADLAD',
       description: 'A Mad Lad from the verified collection',

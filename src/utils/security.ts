@@ -240,7 +240,7 @@ export class MemoryManager {
         
         if (memUsage.percentage > this.criticalThreshold) {
           // Use console.error for critical system messages that should always be visible
-          console.error('CRITICAL: Memory usage >90%, forcing garbage collection');
+          console.error('High memory usage detected (>90%), forcing garbage collection');
           if (global.gc) {
             global.gc();
           }

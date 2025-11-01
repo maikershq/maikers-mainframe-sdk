@@ -17,7 +17,7 @@ export {
   createDevnetSDK
 } from './sdk';
 
-// TESTING ONLY: Mock SDK factory with testing-only guard
+// Mock SDK factory with testing-only guard
 import { createMockSDK as _createMockSDK } from './sdk';
 import { ensureTestingOnly } from './production-guard';
 export const createMockSDK = (...args: Parameters<typeof _createMockSDK>) => {
@@ -115,7 +115,7 @@ export {
   StorageUtils
 } from './services/storage';
 
-// TESTING ONLY: Mock service with testing-only guard
+// Mock service with testing-only guard
 import { MockStorageService as _MockStorageService } from './services/storage';
 import { wrapMockExport } from './production-guard';
 export const MockStorageService = wrapMockExport(_MockStorageService, 'MockStorageService');
@@ -129,7 +129,7 @@ export {
   WalletUtils
 } from './services/wallet';
 
-// TESTING ONLY: Mock service with testing-only guard
+// Mock service with testing-only guard
 import { MockWalletService as _MockWalletService } from './services/wallet';
 export const MockWalletService = wrapMockExport(_MockWalletService, 'MockWalletService');
 
@@ -138,7 +138,7 @@ export {
   EventUtils
 } from './services/events';
 
-// TESTING ONLY: Mock service with testing-only guard
+// Mock service with testing-only guard
 import { MockEventService as _MockEventService } from './services/events';
 export const MockEventService = wrapMockExport(_MockEventService, 'MockEventService');
 export type { EventCallback, EventFilter } from './services/events';
@@ -285,7 +285,7 @@ export const QuickStart = {
   },
 
   /**
-   * Create a testing SDK with all mocks enabled (UNIT TESTING ONLY)
+   * Create a testing SDK with all mocks enabled (for testing only)
    */
   testing: () => {
     ensureTestingOnly('QuickStart.testing()');

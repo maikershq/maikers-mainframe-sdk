@@ -625,7 +625,7 @@ export class ProductionTestSuite {
     // Security recommendations
     const secSuite = this.results.find(s => s.name === 'Security Tests');
     if (secSuite && secSuite.failed > 0) {
-      recommendations.push('CRITICAL: Address security test failures before production');
+      recommendations.push('Address security test failures before production deployment');
     }
 
     if (recommendations.length === 0) {

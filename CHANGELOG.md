@@ -5,6 +5,124 @@ All notable changes to the Mainframe SDK will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-11-01
+
+### ✨ **New Features**
+
+**Program Update:**
+- Updated to Mainframe v1.0.0 program (ID: `mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE`)
+- Enhanced `createAgent` method with new affiliate and referrer support
+- Improved agent creation flow with automatic affiliate account initialization
+- Removed redundant `protocolAuthority` account requirement
+
+**API Enhancements:**
+```typescript
+// Enhanced createAgent method
+await sdk.createAgent(nftMint, config, {
+  affiliate: 'WALLET_ADDRESS',      // Gets commission
+  referrer: 'REFERRER_ADDRESS'      // Optional, for multi-level
+});
+```
+
+### ✨ **New Features**
+
+**Advanced Affiliate System:**
+- ✅ Tier-based commission system (Bronze 15% → Diamond 50%)
+- ✅ Automatic affiliate account initialization on first commission
+- ✅ Multi-level referral support (earn from your referrals' sales)
+- ✅ Streak bonuses up to +15%
+- ✅ Milestone rewards (0.1 SOL to 1000 SOL)
+- ✅ Permissionless participation (no pre-registration)
+- ✅ On-chain tier progression tracking
+
+**New Program Instructions:**
+- `register_affiliate` - Explicitly register as affiliate with optional referrer
+- `set_affiliate_bonus` - Authority can set custom bonus rates
+- `propose_authority_transfer` - Step 1 of 2-step authority transfer
+- `accept_authority_transfer` - Step 2 of 2-step authority transfer
+- `cancel_authority_transfer` - Cancel pending transfer
+- `update_treasury_addresses` - Update treasury wallet addresses
+
+**New Account Types:**
+- `AffiliateAccount` - Tracks affiliate performance and earnings
+- Enhanced `ProtocolConfig` with manager role and genesis collection
+
+**New Events:**
+- `AffiliateBonusSet` - Custom bonus rate applied
+- `AffiliateRegistered` - New affiliate joined
+- `TierUpgraded` - Affiliate tier progression
+- `TreasuryAddressesUpdated` - Treasury wallets changed
+
+### 🔄 **Changed**
+
+- Updated program ID constant to new mainframe v1.0.0 address
+- Affiliate system now uses PDA-based accounts instead of simple transfers
+- Protocol supports genesis collection with zero fees
+- Enhanced authority management with 2-step transfer for security
+- Fee structure field renamed: `update_config` → `update_agent_config`
+
+### 📦 **Added Types**
+
+```typescript
+interface AffiliateAccount {
+  affiliate: string;
+  totalSales: number;
+  totalRevenue: number;
+  referralCount: number;
+  referreeSales: number;
+  referreeRevenue: number;
+  referrer?: string;
+  createdAt: number;
+  bonusBps: number;
+  bump: number;
+}
+
+interface AffiliateTier {
+  name: 'Bronze' | 'Silver' | 'Gold' | 'Platinum' | 'Diamond';
+  threshold: number;
+  commissionRate: number;
+}
+```
+
+### 🛠 **Technical Updates**
+
+- Added `deriveAffiliateAccount()` method for PDA derivation
+- Added `derivePartnerAccount()` method for partner collection PDAs
+- Updated transaction building to support optional affiliate accounts
+- Enhanced validation for affiliate parameters
+- Updated logging to track affiliate and referrer information
+
+### 📖 **Usage Guide**
+
+1. **Agent Creation with Affiliates:**
+   ```typescript
+   // New affiliate/referrer support in createAgent
+   const result = await sdk.createAgent(nftMint, config, {
+     affiliate: 'AFFILIATE_WALLET',      // Earns commission
+     referrer: 'OPTIONAL_REFERRER'       // Multi-level support
+   });
+   ```
+
+2. **Tracking Affiliate Performance:**
+   ```typescript
+   // Monitor affiliate events
+   sdk.events.onAffiliatePaid((event) => {
+     console.log('Affiliate:', event.seller);
+     console.log('Amount:', event.affiliateAmount);
+   });
+   ```
+
+3. **Program ID:**
+   - Current: `mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE`
+
+### ⚠️ **Important Notes**
+
+- Updated to support mainframe v1.0.0 program
+- Backward compatible with existing agents
+- Affiliate accounts auto-initialize on first commission (no manual registration needed)
+- Commission rates are determined by on-chain tier progression
+- Multi-level referrals create passive income opportunities
+
 ## [1.0.6] - 2025-10-19
 
 ### 🔒 **Security**

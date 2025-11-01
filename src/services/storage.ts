@@ -381,9 +381,7 @@ export class MockStorageService extends StorageService {
 
   constructor(config: MainframeConfig) {
     if (process.env.NODE_ENV !== 'test') {
-      throw new Error(
-        'SECURITY ERROR: MockStorageService can ONLY be used in testing environment'
-      );
+      throw new Error('MockStorageService can only be used in testing environment');
     }
     super(config);
   }
@@ -395,16 +393,16 @@ export class MockStorageService extends StorageService {
     // Simulate upload delay
     await new Promise(resolve => setTimeout(resolve, 100));
     
-    const mockTxId = this.generateMockTxId();
-    const uri = `ar://${mockTxId}`;
+    const mockHash = this.generateMockTxId();
+    const uri = `ipfs://${mockHash}`;
     
     // Store in mock storage
     this.mockStorage.set(uri, encryptedMetadata);
     
     const upload: StorageUpload = {
-      provider: 'arweave',
-      txId: mockTxId,
-      url: `https://arweave.net/${mockTxId}`,
+      provider: 'ipfs',
+      txId: mockHash,
+      url: `https://ipfs.io/ipfs/${mockHash}`,
       timestamp: Date.now()
     };
     

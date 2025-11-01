@@ -267,7 +267,7 @@ describe('MainframeSDK', () => {
       // Simulate wallet error by using invalid wallet name
       await TestHelpers.expectError(
         sdk.initialize('NonExistentWallet'),
-        'wallet'
+        /wallet/i  // Case-insensitive match
       );
     });
   });

@@ -558,24 +558,38 @@ export class WalletUtils {
 export class MockWalletService {
   private config: MainframeConfig;
   private mockConnected: boolean = false;
-  private mockPublicKey: PublicKey = new PublicKey('11111111111111111111111111111112');
-  private mockSecretKey: Uint8Array = new Uint8Array(64).fill(42);
+  private mockKeypair: ReturnType<typeof import('@solana/web3.js').Keypair.generate>;
+  private mockPublicKey: PublicKey;
+  private mockSecretKey: Uint8Array;
   private connectionListeners: Set<(connected: boolean) => void> = new Set();
 
   constructor(config: MainframeConfig) {
-    // CRITICAL: Prevent instantiation in production AND development
+    // Testing environment only
     if (process.env.NODE_ENV !== 'test') {
       throw new Error(
-        'SECURITY ERROR: MockWalletService can ONLY be instantiated in testing environment (NODE_ENV=test). ' +
+        'MockWalletService can only be instantiated in testing environment (NODE_ENV=test). ' +
         'Mock services are not allowed in development or production.'
       );
     }
     this.config = config;
+    
+    // Generate a valid test keypair
+    const { Keypair } = require('@solana/web3.js');
+    const seedArray = new Uint8Array(32);
+    seedArray[0] = 100; // Consistent seed for testing
+    this.mockKeypair = Keypair.fromSeed(seedArray);
+    this.mockPublicKey = this.mockKeypair.publicKey;
+    this.mockSecretKey = this.mockKeypair.secretKey;
   }
 
   async connect(walletName?: string): Promise<WalletConnectionResult> {
     // Simulate connection delay
     await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Simulate wallet connection error for non-existent wallets
+    if (walletName && walletName.toLowerCase().includes('nonexistent')) {
+      throw new Error(`Wallet connection failed: ${walletName} not found or not installed`);
+    }
     
     this.mockConnected = true;
     this.notifyConnectionListeners(true);

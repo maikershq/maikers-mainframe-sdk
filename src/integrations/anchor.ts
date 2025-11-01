@@ -128,7 +128,6 @@ export class AnchorMainframeSDK extends MainframeSDK {
   async createAgentWithAnchor(
     nftMint: PublicKey,
     metadataUri: string,
-    sellerAffiliateBps: number = 0,
     collectionMint: PublicKey | null = null,
     accounts: any
   ): Promise<string> {
@@ -138,7 +137,7 @@ export class AnchorMainframeSDK extends MainframeSDK {
 
     try {
       const signature = await this.anchorProgram.methods
-        .createAgent(nftMint, metadataUri, sellerAffiliateBps, collectionMint)
+        .createAgent(nftMint, metadataUri, collectionMint)
         .accounts(accounts)
         .rpc();
       return signature;

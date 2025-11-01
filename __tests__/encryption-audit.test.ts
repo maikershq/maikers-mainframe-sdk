@@ -55,7 +55,7 @@ describe('Encryption Security Audit', () => {
       rpcEndpoint: 'https://api.devnet.solana.com',
       programId: '11111111111111111111111111111111',
       protocolWallet: protocolWallet.publicKey,
-      storage: { primary: 'arweave' }
+      storage: { arweave: { gateway: 'https://arweave.net' } }
     };
 
     encryptionService = new EncryptionService(config);

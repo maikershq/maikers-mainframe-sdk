@@ -409,7 +409,7 @@ export class DataAccessService {
         external_url: 'https://mainframe.maikers.com',
         secure: secureBlock,
         based_on: {
-          mint: 'mock_original_mint',
+          mint: mintAddress,
           collection: verifiedNFT.verified_collection.key,
           original_name: verifiedNFT.name
         },

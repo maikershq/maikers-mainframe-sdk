@@ -5,14 +5,67 @@
  * IDL can be found at `target/idl/mainframe.json`.
  */
 export type Mainframe = {
-  "address": "4J4xEFhpn2r7rRiEiazBd1K8JThUM13J6uRL6gcaankU",
+  "address": "mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE",
   "metadata": {
     "name": "mainframe",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "spec": "0.1.0",
-    "description": "Created with Anchor"
+    "description": "keep calm and let the mainframe handle it."
   },
   "instructions": [
+    {
+      "name": "acceptAuthorityTransfer",
+      "docs": [
+        "Accept authority transfer (step 2 of 2-step transfer)",
+        "New authority must explicitly accept"
+      ],
+      "discriminator": [
+        239,
+        248,
+        177,
+        2,
+        206,
+        97,
+        46,
+        255
+      ],
+      "accounts": [
+        {
+          "name": "protocolConfig",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "newAuthority",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
+    },
     {
       "name": "addPartnerCollection",
       "docs": [
@@ -82,7 +135,7 @@ export type Mainframe = {
           }
         },
         {
-          "name": "authority",
+          "name": "signer",
           "writable": true,
           "signer": true
         },
@@ -105,6 +158,59 @@ export type Mainframe = {
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "cancelAuthorityTransfer",
+      "docs": [
+        "Cancel pending authority transfer",
+        "Current authority can cancel if needed"
+      ],
+      "discriminator": [
+        94,
+        131,
+        125,
+        184,
+        183,
+        24,
+        125,
+        229
+      ],
+      "accounts": [
+        {
+          "name": "protocolConfig",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
     },
     {
       "name": "closeAgent",
@@ -144,6 +250,12 @@ export type Mainframe = {
               }
             ]
           }
+        },
+        {
+          "name": "nftTokenAccount",
+          "docs": [
+            "NFT token account - validates current owner actually owns the NFT"
+          ]
         },
         {
           "name": "owner",
@@ -311,23 +423,10 @@ export type Mainframe = {
           "signer": true
         },
         {
-          "name": "protocolAuthority",
-          "docs": [
-            "Protocol authority that pays for account creation (for rent recovery)"
-          ],
-          "writable": true,
-          "signer": true
-        },
-        {
           "name": "nftTokenAccount",
           "docs": [
-            "NFT token account owned by the user"
-          ]
-        },
-        {
-          "name": "nftMetadata",
-          "docs": [
-            "NFT metadata account"
+            "NFT token account owned by the user",
+            "Simple validation: owner has the NFT (amount = 1)"
           ]
         },
         {
@@ -377,10 +476,34 @@ export type Mainframe = {
           "writable": true
         },
         {
-          "name": "seller",
+          "name": "affiliate",
           "docs": [
-            "Optional seller account that receives affiliate fee",
-            "Can have zero balance - Solana allows transfers to any account passed in transaction"
+            "Optional affiliate wallet (receives commission)",
+            "Can be zero-balance - will be funded by first commission"
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "affiliateAccount",
+          "docs": [
+            "Optional affiliate account PDA (auto-initialized if needed)"
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "referrer",
+          "docs": [
+            "Optional referrer wallet (receives 5% if affiliate has referrer)"
+          ],
+          "writable": true,
+          "optional": true
+        },
+        {
+          "name": "referrerAccount",
+          "docs": [
+            "Optional referrer's affiliate account PDA (updated with referree stats)"
           ],
           "writable": true,
           "optional": true
@@ -388,7 +511,15 @@ export type Mainframe = {
         {
           "name": "partnerAccount",
           "docs": [
-            "Optional partner collection account for discount validation"
+            "Optional partner collection account for discount validation",
+            "PDA seeds validated in processor to prevent fake partner accounts"
+          ],
+          "optional": true
+        },
+        {
+          "name": "nftMetadata",
+          "docs": [
+            "Metaplex metadata account for collection verification"
           ],
           "optional": true
         },
@@ -405,10 +536,6 @@ export type Mainframe = {
         {
           "name": "metadataUri",
           "type": "string"
-        },
-        {
-          "name": "sellerAffiliateBps",
-          "type": "u16"
         },
         {
           "name": "collectionMint",
@@ -482,36 +609,20 @@ export type Mainframe = {
           }
         },
         {
-          "name": "protocolTreasury",
-          "type": "pubkey"
+          "name": "treasuryParams",
+          "type": {
+            "defined": {
+              "name": "treasuryParams"
+            }
+          }
         },
         {
-          "name": "validatorTreasury",
-          "type": "pubkey"
-        },
-        {
-          "name": "networkTreasury",
-          "type": "pubkey"
-        },
-        {
-          "name": "protocolTreasuryBps",
-          "type": "u16"
-        },
-        {
-          "name": "validatorTreasuryBps",
-          "type": "u16"
-        },
-        {
-          "name": "networkTreasuryBps",
-          "type": "u16"
-        },
-        {
-          "name": "maxPartnerCollections",
-          "type": "u64"
-        },
-        {
-          "name": "maxAffiliateBps",
-          "type": "u16"
+          "name": "configParams",
+          "type": {
+            "defined": {
+              "name": "configParams"
+            }
+          }
         }
       ]
     },
@@ -612,6 +723,12 @@ export type Mainframe = {
           }
         },
         {
+          "name": "nftTokenAccount",
+          "docs": [
+            "NFT token account - validates current owner actually owns the NFT"
+          ]
+        },
+        {
           "name": "owner",
           "writable": true,
           "signer": true
@@ -645,6 +762,135 @@ export type Mainframe = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "proposeAuthorityTransfer",
+      "docs": [
+        "Propose new protocol authority (step 1 of 2-step transfer)",
+        "Two-step authority transfer prevents accidental lockout"
+      ],
+      "discriminator": [
+        57,
+        206,
+        225,
+        129,
+        35,
+        111,
+        174,
+        145
+      ],
+      "accounts": [
+        {
+          "name": "protocolConfig",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "currentAuthority",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "newAuthority",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "registerAffiliate",
+      "docs": [
+        "Register as an affiliate"
+      ],
+      "discriminator": [
+        87,
+        121,
+        99,
+        184,
+        126,
+        63,
+        103,
+        217
+      ],
+      "accounts": [
+        {
+          "name": "affiliateAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  102,
+                  102,
+                  105,
+                  108,
+                  105,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "affiliate"
+              }
+            ]
+          }
+        },
+        {
+          "name": "affiliate",
+          "docs": [
+            "The affiliate registering"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "referrer",
+          "docs": [
+            "Optional referrer (who referred this affiliate)"
+          ],
+          "optional": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "referrer",
+          "type": {
+            "option": "pubkey"
+          }
+        }
+      ]
     },
     {
       "name": "removePartnerCollection",
@@ -715,7 +961,7 @@ export type Mainframe = {
           }
         },
         {
-          "name": "authority",
+          "name": "signer",
           "writable": true,
           "signer": true
         }
@@ -724,6 +970,89 @@ export type Mainframe = {
         {
           "name": "collection",
           "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "setAffiliateBonus",
+      "docs": [
+        "Set custom affiliate bonus (Authority or Manager)"
+      ],
+      "discriminator": [
+        137,
+        239,
+        68,
+        163,
+        216,
+        165,
+        154,
+        121
+      ],
+      "accounts": [
+        {
+          "name": "affiliateAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  102,
+                  102,
+                  105,
+                  108,
+                  105,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "affiliate_account.affiliate",
+                "account": "affiliateAccount"
+              }
+            ]
+          }
+        },
+        {
+          "name": "protocolConfig",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "bonusBps",
+          "type": "u16"
         }
       ]
     },
@@ -767,18 +1096,16 @@ export type Mainframe = {
           }
         },
         {
-          "name": "currentOwner",
-          "writable": true,
-          "signer": true
-        },
-        {
           "name": "newNftTokenAccount",
           "docs": [
-            "New NFT token account (owned by new_owner)"
+            "New NFT token account - validates that new_owner actually owns the NFT"
           ]
         },
         {
           "name": "newOwner",
+          "docs": [
+            "New owner pays fee to claim agent control"
+          ],
           "writable": true,
           "signer": true
         },
@@ -930,63 +1257,6 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "updateAuthority",
-      "docs": [
-        "Update protocol authority"
-      ],
-      "discriminator": [
-        32,
-        46,
-        64,
-        28,
-        149,
-        75,
-        243,
-        88
-      ],
-      "accounts": [
-        {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  112,
-                  114,
-                  111,
-                  116,
-                  111,
-                  99,
-                  111,
-                  108,
-                  95,
-                  99,
-                  111,
-                  110,
-                  102,
-                  105,
-                  103
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "authority",
-          "writable": true,
-          "signer": true
-        }
-      ],
-      "args": [
-        {
-          "name": "newAuthority",
-          "type": "pubkey"
-        }
-      ]
-    },
-    {
       "name": "updateFees",
       "docs": [
         "Update fee structure"
@@ -1109,6 +1379,85 @@ export type Mainframe = {
       ]
     },
     {
+      "name": "updateTreasuryAddresses",
+      "docs": [
+        "Update treasury addresses"
+      ],
+      "discriminator": [
+        233,
+        146,
+        71,
+        42,
+        221,
+        99,
+        247,
+        150
+      ],
+      "accounts": [
+        {
+          "name": "protocolConfig",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  116,
+                  111,
+                  99,
+                  111,
+                  108,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "authority",
+          "docs": [
+            "Protocol authority (must match config)"
+          ],
+          "signer": true,
+          "relations": [
+            "protocolConfig"
+          ]
+        },
+        {
+          "name": "newProtocolTreasury"
+        },
+        {
+          "name": "newValidatorTreasury"
+        },
+        {
+          "name": "newNetworkTreasury"
+        }
+      ],
+      "args": [
+        {
+          "name": "newProtocolTreasury",
+          "type": "pubkey"
+        },
+        {
+          "name": "newValidatorTreasury",
+          "type": "pubkey"
+        },
+        {
+          "name": "newNetworkTreasury",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
       "name": "updateTreasuryDistribution",
       "docs": [
         "Update treasury distribution"
@@ -1176,6 +1525,19 @@ export type Mainframe = {
   ],
   "accounts": [
     {
+      "name": "affiliateAccount",
+      "discriminator": [
+        189,
+        94,
+        244,
+        154,
+        243,
+        52,
+        127,
+        157
+      ]
+    },
+    {
       "name": "agentAccount",
       "discriminator": [
         241,
@@ -1217,6 +1579,19 @@ export type Mainframe = {
   ],
   "events": [
     {
+      "name": "affiliateBonusSet",
+      "discriminator": [
+        23,
+        255,
+        195,
+        110,
+        108,
+        101,
+        24,
+        233
+      ]
+    },
+    {
       "name": "affiliatePaid",
       "discriminator": [
         23,
@@ -1227,6 +1602,19 @@ export type Mainframe = {
         32,
         36,
         32
+      ]
+    },
+    {
+      "name": "affiliateRegistered",
+      "discriminator": [
+        105,
+        5,
+        31,
+        167,
+        189,
+        121,
+        113,
+        42
       ]
     },
     {
@@ -1318,6 +1706,32 @@ export type Mainframe = {
         250,
         210,
         166
+      ]
+    },
+    {
+      "name": "tierUpgraded",
+      "discriminator": [
+        141,
+        12,
+        195,
+        74,
+        212,
+        102,
+        162,
+        123
+      ]
+    },
+    {
+      "name": "treasuryAddressesUpdated",
+      "discriminator": [
+        73,
+        89,
+        76,
+        157,
+        121,
+        252,
+        43,
+        169
       ]
     }
   ],
@@ -1436,9 +1850,158 @@ export type Mainframe = {
       "code": 12022,
       "name": "invalidAffiliate",
       "msg": "Invalid affiliate percentage (must be 0-5000 bps, max 50%)"
+    },
+    {
+      "code": 12023,
+      "name": "affiliateNotFound",
+      "msg": "Affiliate account not found"
+    },
+    {
+      "code": 12024,
+      "name": "unauthorizedManager",
+      "msg": "Unauthorized manager operation"
+    },
+    {
+      "code": 12025,
+      "name": "circularReferral",
+      "msg": "Referral would create circular reference"
+    },
+    {
+      "code": 12026,
+      "name": "maxReferralDepthExceeded",
+      "msg": "Maximum referral depth exceeded"
+    },
+    {
+      "code": 12027,
+      "name": "alreadyOwner",
+      "msg": "Agent is already owned by the new owner"
+    },
+    {
+      "code": 12028,
+      "name": "invalidNft",
+      "msg": "NFT mint does not match agent account"
+    },
+    {
+      "code": 12029,
+      "name": "invalidTreasuryAddress",
+      "msg": "Invalid treasury address - cannot be system program, protocol config, or program ID"
+    },
+    {
+      "code": 12030,
+      "name": "treasuriesMustBeDifferent",
+      "msg": "All three treasuries must be different addresses"
+    },
+    {
+      "code": 12031,
+      "name": "treasuryAccountMismatch",
+      "msg": "Treasury account mismatch - provided account doesn't match pubkey"
     }
   ],
   "types": [
+    {
+      "name": "affiliateAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "affiliate",
+            "docs": [
+              "The affiliate's wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "totalSales",
+            "docs": [
+              "Total number of agent sales"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "totalRevenue",
+            "docs": [
+              "Total revenue earned (lamports)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "referralCount",
+            "docs": [
+              "Number of direct referrals (Level 1)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "referreeSales",
+            "docs": [
+              "Total sales made by referrals"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "referreeRevenue",
+            "docs": [
+              "Total revenue earned from referral commissions"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "referrer",
+            "docs": [
+              "Who referred this affiliate (single-level referrals only)"
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
+            "name": "createdAt",
+            "docs": [
+              "Account creation timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bonusBps",
+            "docs": [
+              "Custom bonus rate in basis points (set by authority or manager for special deals)"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "Bump seed for PDA"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "affiliateBonusSet",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "affiliate",
+            "type": "pubkey"
+          },
+          {
+            "name": "bonusBps",
+            "type": "u16"
+          },
+          {
+            "name": "setBy",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
     {
       "name": "affiliatePaid",
       "type": {
@@ -1459,6 +2022,28 @@ export type Mainframe = {
           {
             "name": "affiliateBps",
             "type": "u16"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "affiliateRegistered",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "affiliate",
+            "type": "pubkey"
+          },
+          {
+            "name": "referrer",
+            "type": {
+              "option": "pubkey"
+            }
           },
           {
             "name": "timestamp",
@@ -1533,15 +2118,6 @@ export type Mainframe = {
               "Version for configuration updates"
             ],
             "type": "u64"
-          },
-          {
-            "name": "seller",
-            "docs": [
-              "Seller who receives commission (if any)"
-            ],
-            "type": {
-              "option": "pubkey"
-            }
           },
           {
             "name": "reserved",
@@ -1760,6 +2336,30 @@ export type Mainframe = {
       }
     },
     {
+      "name": "configParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "genesisCollectionMint",
+            "type": "pubkey"
+          },
+          {
+            "name": "maxPartnerCollections",
+            "type": "u64"
+          },
+          {
+            "name": "maxAffiliateBps",
+            "type": "u16"
+          },
+          {
+            "name": "manager",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
       "name": "feeStructure",
       "type": {
         "kind": "struct",
@@ -1769,7 +2369,7 @@ export type Mainframe = {
             "type": "u64"
           },
           {
-            "name": "updateConfig",
+            "name": "updateAgentConfig",
             "type": "u64"
           },
           {
@@ -1836,6 +2436,20 @@ export type Mainframe = {
             "type": "pubkey"
           },
           {
+            "name": "manager",
+            "docs": [
+              "Manager authority (can manage flash bonuses and operational tasks)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "genesisCollectionMint",
+            "docs": [
+              "Genesis collection mint (zero fees for this collection)"
+            ],
+            "type": "pubkey"
+          },
+          {
             "name": "fees",
             "docs": [
               "Fee structure"
@@ -1864,7 +2478,7 @@ export type Mainframe = {
           {
             "name": "protocolTreasuryBps",
             "docs": [
-              "Fee distribution in basis points"
+              "Fee distribution in basis points (must sum to 10000)"
             ],
             "type": "u16"
           },
@@ -1912,6 +2526,15 @@ export type Mainframe = {
             "type": "u16"
           },
           {
+            "name": "pendingAuthority",
+            "docs": [
+              "Pending authority for two-step transfer"
+            ],
+            "type": {
+              "option": "pubkey"
+            }
+          },
+          {
             "name": "reserved",
             "docs": [
               "Reserved space for future upgrades"
@@ -1919,9 +2542,109 @@ export type Mainframe = {
             "type": {
               "array": [
                 "u8",
-                54
+                20
               ]
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "tierUpgraded",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "affiliate",
+            "type": "pubkey"
+          },
+          {
+            "name": "oldTier",
+            "type": "u8"
+          },
+          {
+            "name": "newTier",
+            "type": "u8"
+          },
+          {
+            "name": "totalSales",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "treasuryAddressesUpdated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "oldProtocolTreasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "oldValidatorTreasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "oldNetworkTreasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "newProtocolTreasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "newValidatorTreasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "newNetworkTreasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "treasuryParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "protocolTreasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "validatorTreasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "networkTreasury",
+            "type": "pubkey"
+          },
+          {
+            "name": "protocolTreasuryBps",
+            "type": "u16"
+          },
+          {
+            "name": "validatorTreasuryBps",
+            "type": "u16"
+          },
+          {
+            "name": "networkTreasuryBps",
+            "type": "u16"
           }
         ]
       }
