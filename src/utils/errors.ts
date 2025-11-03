@@ -91,6 +91,7 @@ export enum ErrorCodes {
   // ============================================================================
   // Program Errors (4000-4099)
   // ============================================================================
+  SDK_NOT_INITIALIZED = 'SDK_NOT_INITIALIZED',
   INVALID_NFT = 'INVALID_NFT',
   AGENT_ALREADY_EXISTS = 'AGENT_ALREADY_EXISTS',
   AGENT_NOT_FOUND = 'AGENT_NOT_FOUND',
@@ -187,6 +188,14 @@ export class ErrorFactory {
       'Failed to connect to wallet. Please try again.',
       ErrorCodes.WALLET_NOT_CONNECTED,
       cause
+    );
+  }
+
+  // Program Errors
+  static programNotInitialized(): MainframeSDKError {
+    return new MainframeSDKError(
+      'Program service is not initialized. Please initialize the SDK first.',
+      ErrorCodes.SDK_NOT_INITIALIZED
     );
   }
 

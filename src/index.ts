@@ -364,8 +364,8 @@ export const QuickStartIntegrations = {
       const sdkConfig = {
         solanaNetwork: 'mainnet-beta' as const,
         rpcEndpoint: provider.connection?.rpcEndpoint || 'https://api.mainnet-beta.solana.com',
-        programId: 'mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE',
-        protocolWallet: 'ZN23LgbgnQHKBs18frvuJqBgBn29k7MFWCgo9cXvhDa',
+        // programId defaults to mainnet: mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE
+        // protocolWallet deprecated - fetched from on-chain config
         storage: {
           arweave: { gateway: 'https://arweave.net' }
         },
@@ -496,8 +496,8 @@ export const QuickStartIntegrations = {
       if (connection) {
         const sdk = new MainframeSDK({
           solanaNetwork: 'mainnet-beta' as const,
-          programId: 'mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE',
-          protocolWallet: 'ZN23LgbgnQHKBs18frvuJqBgBn29k7MFWCgo9cXvhDa',
+          // programId defaults to mainnet: mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE
+          // protocolWallet deprecated - fetched from on-chain config
           storage: {
             arweave: { gateway: 'https://arweave.net' }
           },

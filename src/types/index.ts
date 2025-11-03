@@ -9,13 +9,13 @@ export interface MainframeConfig {
   // Solana Configuration
   solanaNetwork: 'devnet' | 'testnet' | 'mainnet-beta';
   rpcEndpoint: string;
-  programId: string;
+  programId?: string; // Defaults to mainnet: mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE
   
   // Storage Configuration  
   storage: StorageConfig;
   
-  // Protocol Configuration
-  protocolWallet: string;
+  // Protocol Configuration (deprecated - fetched from on-chain config)
+  protocolWallet?: string; // Deprecated: Treasury addresses are fetched from protocol config account
   
   // Optional: Custom encryption settings
   encryption?: EncryptionConfig;
@@ -564,7 +564,7 @@ export const AgentConfigSchema = z.object({
 export const MainframeConfigSchema = z.object({
   solanaNetwork: z.enum(['devnet', 'testnet', 'mainnet-beta']),
   rpcEndpoint: z.string().url(),
-  programId: z.string(),
+  programId: z.string().optional(),
   storage: z.object({
     arweave: z.object({
       gateway: z.string().url(),
@@ -572,7 +572,7 @@ export const MainframeConfigSchema = z.object({
       wallet: z.string().optional()
     })
   }),
-  protocolWallet: z.string(),
+  protocolWallet: z.string().optional(), // Deprecated: fetched from on-chain config
   encryption: z.object({
     algorithm: z.literal('xchacha20poly1305-ietf'),
     keyDerivation: z.literal('ed25519-to-x25519')

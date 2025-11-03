@@ -141,6 +141,8 @@ export class LRUCache<T> {
   private cache = new Map<string, CacheEntry<T>>();
   private readonly maxSize: number;
   private readonly ttl: number;
+  private hits: number = 0;
+  private misses: number = 0;
 
   constructor(maxSize: number = 1000, ttlMs: number = 300000) {
     this.maxSize = maxSize;
@@ -157,17 +159,20 @@ export class LRUCache<T> {
     const entry = this.cache.get(key);
     
     if (!entry) {
+      this.misses++;
       return undefined;
     }
 
     // Check TTL
     if (Date.now() - entry.timestamp > this.ttl) {
       this.cache.delete(key);
+      this.misses++;
       return undefined;
     }
 
     // Update access time for LRU
     entry.lastAccessed = Date.now();
+    this.hits++;
     return entry.value;
   }
 
@@ -260,8 +265,8 @@ export class LRUCache<T> {
   }
 
   private calculateHitRate(): number {
-    // This would need to be tracked separately in a real implementation
-    return 0.85; // Placeholder
+    const total = this.hits + this.misses;
+    return total === 0 ? 0 : this.hits / total;
   }
 
   private getOldestEntry(): number {

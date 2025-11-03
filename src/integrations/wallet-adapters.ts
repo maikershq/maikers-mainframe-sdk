@@ -201,8 +201,8 @@ export class WalletAdapterUtils {
     const sdkConfig: MainframeConfig = {
       solanaNetwork: 'mainnet-beta',
       rpcEndpoint: connection.rpcEndpoint,
-      programId: config.programId || 'mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE',
-      protocolWallet: config.protocolWallet || 'PROTOCOL_WALLET_PUBKEY_HERE',
+      // programId will default to mainnet if not provided
+      // protocolWallet deprecated - fetched from on-chain config
       storage: config.storage || {
         arweave: { gateway: 'https://arweave.net' }
       },
@@ -263,49 +263,60 @@ export interface UseMainframeSDKResult {
 }
 
 /**
- * Helper for React wallet adapter integration
+ * Template for React wallet adapter integration hook
  * 
- * @example
+ * This is a reference implementation template. React hooks should be implemented
+ * in a separate @maikers/mainframe-sdk-react package to avoid React dependencies
+ * in the core SDK.
+ * 
+ * @example Implementation in React package
  * ```tsx
+ * import { useState, useEffect } from 'react';
  * import { useWallet, useConnection } from '@solana/wallet-adapter-react';
- * import { createMainframeHook } from '@maikers/mainframe-sdk/integrations';
+ * import { WalletAdapterUtils } from '@maikers/mainframe-sdk/integrations';
  * 
- * const useMainframe = createMainframeHook({
- *   programId: 'YOUR_PROGRAM_ID',
- *   protocolWallet: 'PROTOCOL_WALLET'
- * });
+ * export function useMainframeSDK(config: Partial<MainframeConfig>) {
+ *   const { wallet } = useWallet();
+ *   const { connection } = useConnection();
+ *   const [sdk, setSdk] = useState<WalletAdapterMainframeSDK | null>(null);
+ *   const [isReady, setIsReady] = useState(false);
+ *   const [error, setError] = useState<Error | null>(null);
  * 
- * function MyComponent() {
- *   const { sdk, isReady } = useMainframe();
- *   
- *   const createAgent = async () => {
- *     if (!sdk) return;
- *     await sdk.createAgent(nftMint, agentConfig);
- *   };
+ *   useEffect(() => {
+ *     if (!wallet?.adapter || !connection) {
+ *       setSdk(null);
+ *       setIsReady(false);
+ *       return;
+ *     }
+ * 
+ *     try {
+ *       const newSdk = WalletAdapterUtils.fromWalletContext(
+ *         wallet.adapter,
+ *         connection,
+ *         config
+ *       );
+ *       setSdk(newSdk);
+ *       setIsReady(true);
+ *       setError(null);
+ *     } catch (err) {
+ *       setError(err as Error);
+ *       setSdk(null);
+ *       setIsReady(false);
+ *     }
+ *   }, [wallet, connection, config]);
+ * 
+ *   return { sdk, isReady, error, reconnect: async () => {} };
  * }
  * ```
  */
 export function createMainframeHook(config: Partial<MainframeConfig>) {
-  return function useMainframeSDK(): UseMainframeSDKResult {
-    // This would be implemented as a React hook in a separate React package
-    // For now, return a helper that can be used to create the pattern
-    
-    const createSDKFromContext = (
-      adapter: WalletAdapter | null,
-      connection: Connection
-    ): WalletAdapterMainframeSDK | null => {
-      return WalletAdapterUtils.fromWalletContext(adapter, connection, config);
-    };
-
-    return {
-      sdk: null, // Would be populated by React hook
-      isReady: false,
-      error: null,
-      reconnect: async () => {
-        // Would handle reconnection logic
-      }
-    } as UseMainframeSDKResult;
-  };
+  throw new Error(
+    'createMainframeHook is a template for React integration. ' +
+    'React hooks must be implemented in a separate React package ' +
+    'to avoid React dependencies in the core SDK. ' +
+    'Use WalletAdapterUtils.fromWalletContext() directly or ' +
+    'implement the hook pattern shown in the documentation.'
+  );
 }
 
 // Export factory function

@@ -1,6 +1,6 @@
 {
   "name": "@maikers/mainframe-sdk",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "description": "TypeScript SDK for Mainframe protocol - Powering the agentic economy through Agent-NFTs with enterprise-grade security, performance optimization, and built-in revenue sharing on Solana",
   "main": "dist/cjs/index.js",

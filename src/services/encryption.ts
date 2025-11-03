@@ -331,11 +331,9 @@ export class EncryptionService {
         // Encrypt the payload using XChaCha20-Poly1305
         const ciphertext = this.encryptAEAD(payloadBytes, contentKey, nonce, adBytes);
         
-        // Create keyring for dual access
-        const keyring = await this.createKeyring(contentKey, [
-          userWallet,
-          this.config.protocolWallet
-        ]);
+        // Create keyring for user access only
+        // Protocol access is not needed for encryption - the data is public on-chain anyway
+        const keyring = await this.createKeyring(contentKey, [userWallet]);
         
         const encryptedMetadata: EncryptedMetadata = {
           ver: 1,

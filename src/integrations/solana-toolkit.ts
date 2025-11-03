@@ -28,6 +28,7 @@ import type {
   TransactionOptions,
   AgentAccountData 
 } from '../types';
+import { PROTOCOL_CONSTANTS } from '../utils/constants';
 import { ErrorFactory } from '../utils/errors';
 
 // ============================================================================
@@ -249,7 +250,7 @@ export class ToolkitMainframeSDK extends MainframeSDK {
   private deriveAgentAccount(nftMint: PublicKey): PublicKey {
     const [agentAccount] = PublicKey.findProgramAddressSync(
       [Buffer.from('agent'), nftMint.toBuffer()],
-      new PublicKey(this.config.programId)
+      new PublicKey(this.config.programId || PROTOCOL_CONSTANTS.PROGRAM_ID)
     );
     return agentAccount;
   }
@@ -526,8 +527,8 @@ export class ToolkitIntegration {
     const fullConfig: MainframeConfig = {
       solanaNetwork: 'mainnet-beta',
       rpcEndpoint: connection.rpcEndpoint,
-      programId: config.programId || 'mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE',
-      protocolWallet: config.protocolWallet || 'PROTOCOL_WALLET_PUBKEY_HERE',
+      // programId will default to mainnet if not provided
+      // protocolWallet deprecated - fetched from on-chain config
       storage: config.storage || {
         arweave: { gateway: 'https://arweave.net' }
       },

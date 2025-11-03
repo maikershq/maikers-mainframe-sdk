@@ -96,10 +96,8 @@ const sdk = createMainnetSDK({
   // Solana network configuration
   solanaNetwork: "mainnet-beta",
   rpcEndpoint: "https://api.mainnet-beta.solana.com",
-  programId: "mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE",
-  
-  // Protocol wallet
-  protocolWallet: "PROTOCOL_WALLET_PUBKEY",
+  // programId defaults to mainnet: mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE
+  // protocolWallet deprecated - treasury addresses fetched from on-chain config
   
   // Storage configuration
   storage: {

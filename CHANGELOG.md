@@ -5,6 +5,74 @@ All notable changes to the Mainframe SDK will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-11-03
+
+### 🎯 **Breaking Changes**
+
+**Protocol Configuration from Blockchain:**
+- `protocolWallet` config field is now **deprecated and optional**
+- Treasury addresses are now fetched from on-chain protocol config account
+- SDK automatically fetches all protocol parameters during initialization
+- Old code with `protocolWallet` still works but shows deprecation warning
+
+**Program ID Defaults:**
+- `programId` is now **optional** in config
+- Defaults to mainnet: `mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE`
+- Override only needed for custom deployments or devnet
+
+### ✨ **New Features**
+
+**On-Chain Config Integration:**
+- Added `getProtocolConfig()` - Get cached protocol configuration
+- Added `refreshProtocolConfig()` - Manually refresh from blockchain
+- Protocol config cached during SDK initialization
+- Includes: treasury addresses, fees, distribution percentages, partner collections, pause status
+
+**Production-Ready Implementations:**
+- Real blockchain data fetching (replaced all mocks/placeholders)
+- Proper Associated Token Account (ATA) derivation
+- Real Arweave transaction signing and posting
+- Actual cache hit/miss tracking in LRUCache
+- User-only encryption keyring (protocol access not needed)
+
+### 🐛 **Bug Fixes**
+
+- Fixed TypeScript strict mode issues with optional config fields
+- Fixed `AgentStatus` enum (changed 'Terminated' → 'Closed' to match program)
+- Added missing `SDK_NOT_INITIALIZED` error code
+- Improved error handling for missing accounts in test mode
+
+### 🔧 **Improvements**
+
+**Simplified Configuration:**
+```typescript
+// Before
+const sdk = createMainnetSDK({
+  programId: 'mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE',
+  protocolWallet: 'ZN23LgbgnQHKBs18frvuJqBgBn29k7MFWCgo9cXvhDa',
+  rpcEndpoint: '...',
+  storage: { ... }
+});
+
+// After
+const sdk = createMainnetSDK({
+  rpcEndpoint: '...',
+  storage: { ... }
+  // programId & protocolWallet auto-configured!
+});
+```
+
+**Better Testing:**
+- Graceful fallbacks for test mode
+- All 70 tests passing
+- Improved mock data generation
+
+### 📚 **Documentation**
+
+- Updated quickstart guide for new optional fields
+- Added protocol config access examples
+- Clarified deprecation notices
+
 ## [1.1.0] - 2025-11-01
 
 ### ✨ **New Features**

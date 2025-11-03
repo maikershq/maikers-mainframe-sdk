@@ -414,8 +414,8 @@ describe('Encryption Security Audit', () => {
       // New user should have access
       expect(rotated.keyring).toHaveProperty(newUserWallet);
       
-      // Protocol should still have access
-      expect(rotated.keyring).toHaveProperty(protocolWallet.publicKey);
+      // Note: Protocol wallet is no longer in keyring (user-only encryption)
+      // Protocol gets treasury addresses from on-chain config instead
     });
   });
 

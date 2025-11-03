@@ -180,27 +180,34 @@ export class StorageService {
       throw ErrorFactory.storageUnavailable('arweave');
     }
 
+    if (!this.config.storage.arweave.wallet) {
+      throw new Error(
+        'Arweave wallet not configured. Direct Arweave uploads require a wallet JWK. ' +
+        'Consider using Irys/Bundlr for managed uploads or provide an Arweave wallet in config.'
+      );
+    }
+
     try {
       const content = JSON.stringify(metadata);
       const data = new TextEncoder().encode(content);
 
-      // Create transaction
+      const walletJWK = JSON.parse(this.config.storage.arweave.wallet);
+
       const transaction = await this.arweaveClient.createTransaction({
         data
-      });
+      }, walletJWK);
 
-      // Add tags
       transaction.addTag('Content-Type', 'application/json');
       transaction.addTag('App-Name', 'Maikers-Mainframe');
       transaction.addTag('Version', '1.0.0');
 
-      // Sign transaction (would need wallet integration in real implementation)
-      // For now, we'll simulate the upload
+      await this.arweaveClient.transactions.sign(transaction, walletJWK);
+      await this.arweaveClient.transactions.post(transaction);
       
       const upload: StorageUpload = {
         provider: 'arweave',
         txId: transaction.id,
-        url: `${this.config.storage.arweave!.gateway}/${transaction.id}`,
+        url: `${this.config.storage.arweave.gateway}/${transaction.id}`,
         timestamp: Date.now()
       };
 

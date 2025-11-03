@@ -330,24 +330,12 @@ export class CollectionService {
   }
 
   /**
-   * Process agent image with overlay (simplified)
+   * Process agent image (simplified for SDK)
+   * Image processing with overlays should be handled by the application layer
    */
   private async processAgentImage(originalImageUrl: string, agentName: string): Promise<string> {
-    try {
-      // In a full implementation, this would:
-      // 1. Download the original image
-      // 2. Add "MAINFRAME AGENT" overlay using Sharp
-      // 3. Upload processed image to storage
-      // 4. Return the new image URI
-
-      // For SDK purposes, return a placeholder
-      console.log(`🎨 Processing image for ${agentName} (placeholder implementation)`);
-      return `https://placeholder.com/agent-${agentName.toLowerCase().replace(/\s+/g, '-')}.png`;
-
-    } catch (error) {
-      console.warn('Image processing failed, using original:', error);
-      return originalImageUrl;
-    }
+    console.log(`🎨 Using original image for ${agentName}`);
+    return originalImageUrl;
   }
 
   /**

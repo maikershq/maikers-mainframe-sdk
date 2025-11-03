@@ -17,7 +17,8 @@ import type {
   AgentAccountData,
   ValidationResult,
   WalletConnectionResult,
-  WalletInfo
+  WalletInfo,
+  ProtocolConfigData
 } from './types';
 import { EncryptionService } from './services/encryption';
 import { StorageService, MockStorageService } from './services/storage';
@@ -34,6 +35,7 @@ import {
   globalMemoryManager,
   SecurityConfig 
 } from './utils/security';
+import { PROTOCOL_CONSTANTS } from './utils/constants';
 import { 
   globalConnectionPool, 
   globalMetricsCollector, 
@@ -72,14 +74,21 @@ export class MainframeSDK {
   // State
   private initialized: boolean = false;
   private provider?: AnchorProvider;
+  private cachedProtocolConfig?: ProtocolConfigData;
 
   constructor(config: MainframeConfig) {
+    // Apply defaults
+    const configWithDefaults = {
+      ...config,
+      programId: config.programId || PROTOCOL_CONSTANTS.PROGRAM_ID
+    };
+    
     // Validate configuration
-    ConfigValidator.validateMainframeConfigStrict(config);
+    ConfigValidator.validateMainframeConfigStrict(configWithDefaults);
     
     // Prevent development config in production
-    if (process.env.NODE_ENV === 'production' && config.development) {
-      if (config.development.mockWallet || config.development.mockStorage || config.development.skipFees) {
+    if (process.env.NODE_ENV === 'production' && configWithDefaults.development) {
+      if (configWithDefaults.development.mockWallet || configWithDefaults.development.mockStorage || configWithDefaults.development.skipFees) {
         throw ErrorFactory.internalError(
           'Development config (mockWallet, mockStorage, skipFees) cannot be used in production. ' +
           'These options are only allowed in test and development environments.'
@@ -89,13 +98,16 @@ export class MainframeSDK {
     
     // Validate config values in production
     if (process.env.NODE_ENV === 'production') {
-      if (config.protocolWallet.includes('PUBKEY_HERE') || config.protocolWallet.includes('WALLET_HERE')) {
-        throw ErrorFactory.internalError(
-          'Cannot use placeholder protocol wallet in production. ' +
-          'Please configure a valid protocol wallet address.'
+      // Deprecated: protocolWallet is no longer required (fetched from on-chain config)
+      if (configWithDefaults.protocolWallet && 
+          (configWithDefaults.protocolWallet.includes('PUBKEY_HERE') || 
+           configWithDefaults.protocolWallet.includes('WALLET_HERE'))) {
+        console.warn(
+          'Warning: protocolWallet in config is deprecated. ' +
+          'Treasury addresses are now fetched from the on-chain protocol config account.'
         );
       }
-      if (config.programId.includes('PROGRAM_ID_HERE') || config.programId.includes('ID_HERE')) {
+      if (configWithDefaults.programId.includes('PROGRAM_ID_HERE') || configWithDefaults.programId.includes('ID_HERE')) {
         throw ErrorFactory.internalError(
           'Cannot use placeholder program ID in production. ' +
           'Please configure a valid program ID.'
@@ -103,7 +115,7 @@ export class MainframeSDK {
       }
     }
     
-    this.config = config;
+    this.config = configWithDefaults;
 
     // Configure logging based on environment
     const environment = config.development?.logLevel === 'debug' ? 'development' : 'production';
@@ -284,6 +296,17 @@ export class MainframeSDK {
       // Initialize program service with wallet
       await this.program.initialize(this.wallet.getPublicKey()!, this.provider);
 
+      // Fetch and cache protocol configuration from blockchain
+      try {
+        this.cachedProtocolConfig = await this.program.getProtocolConfig();
+        this.logger.info('Protocol config loaded', {
+          protocolTreasury: this.cachedProtocolConfig.protocolTreasury,
+          paused: this.cachedProtocolConfig.paused
+        });
+      } catch (error) {
+        this.logger.warn('Failed to fetch protocol config, operations may fail', { error });
+      }
+
       // Initialize event service
       await this.events.initialize();
 
@@ -326,6 +349,17 @@ export class MainframeSDK {
 
       // Initialize encryption service
       await this.encryption.initialize();
+
+      // Fetch and cache protocol configuration from blockchain (read-only)
+      try {
+        this.cachedProtocolConfig = await this.program.getProtocolConfig();
+        this.logger.info('Protocol config loaded (read-only)', {
+          protocolTreasury: this.cachedProtocolConfig.protocolTreasury,
+          paused: this.cachedProtocolConfig.paused
+        });
+      } catch (error) {
+        this.logger.warn('Failed to fetch protocol config in read-only mode', { error });
+      }
 
       // Initialize event service without program
       await this.events.initialize();
@@ -404,6 +438,22 @@ export class MainframeSDK {
     } catch (error) {
       this.logger.warn('Warning during cleanup', error as Error);
     }
+  }
+
+  /**
+   * Get cached protocol configuration
+   * Returns the protocol config fetched from blockchain during initialization
+   */
+  getProtocolConfig(): ProtocolConfigData | undefined {
+    return this.cachedProtocolConfig;
+  }
+
+  /**
+   * Refresh protocol configuration from blockchain
+   */
+  async refreshProtocolConfig(): Promise<ProtocolConfigData> {
+    this.cachedProtocolConfig = await this.program.getProtocolConfig();
+    return this.cachedProtocolConfig;
   }
 
   // ============================================================================
@@ -1030,8 +1080,8 @@ export class MainframeSDKFactory {
     const defaultConfig: MainframeConfig = {
       solanaNetwork: 'mainnet-beta',
       rpcEndpoint: 'https://api.mainnet-beta.solana.com',
-      programId: 'mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE',
-      protocolWallet: 'PROTOCOL_WALLET_PUBKEY_HERE',
+      // programId defaults to mainnet: mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE
+      // protocolWallet is deprecated - fetched from on-chain config
       storage: {
         arweave: {
           gateway: 'https://arweave.net'
@@ -1050,8 +1100,8 @@ export class MainframeSDKFactory {
     const defaultConfig: MainframeConfig = {
       solanaNetwork: 'devnet',
       rpcEndpoint: 'https://api.devnet.solana.com',
-      programId: 'DEV_PROGRAM_ID_HERE',
-      protocolWallet: 'DEV_PROTOCOL_WALLET_PUBKEY_HERE',
+      programId: 'DEV_PROGRAM_ID_HERE', // Override with your devnet program ID
+      // protocolWallet is deprecated - fetched from on-chain config
       storage: {
         arweave: {
           gateway: 'https://arweave.net'

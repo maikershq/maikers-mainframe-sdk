@@ -115,8 +115,8 @@ export class IntegrationFactory {
     const fullConfig: MainframeConfig = {
       solanaNetwork: 'mainnet-beta',
       rpcEndpoint: 'https://api.mainnet-beta.solana.com',
-      programId: 'mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE',
-      protocolWallet: 'PROTOCOL_WALLET_PUBKEY_HERE',
+      // programId will default to mainnet if not provided
+      // protocolWallet deprecated - fetched from on-chain config
       storage: {
         arweave: { gateway: 'https://arweave.net' }
       },

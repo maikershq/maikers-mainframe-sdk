@@ -47,14 +47,14 @@ export class ConfigValidator {
         customErrors.push('rpcEndpoint: Invalid RPC endpoint format');
       }
       
-      // Validate program ID format
-      if (!this.isValidPublicKey(config.programId)) {
+      // Validate program ID format (optional - has default)
+      if (config.programId && !this.isValidPublicKey(config.programId)) {
         customErrors.push('programId: Invalid Solana public key format');
       }
       
-      // Validate protocol wallet format
-      if (!this.isValidPublicKey(config.protocolWallet)) {
-        customErrors.push('protocolWallet: Invalid Solana public key format');
+      // Validate protocol wallet format (optional - deprecated, fetched from on-chain config)
+      if (config.protocolWallet && !this.isValidPublicKey(config.protocolWallet)) {
+        customErrors.push('protocolWallet: Invalid Solana public key format (deprecated - fetched from on-chain config)');
       }
       
       // Validate storage configuration

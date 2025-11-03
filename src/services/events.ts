@@ -20,6 +20,7 @@ import type {
   AgentErrorEvent
 } from '../types';
 import { ErrorFactory, MainframeSDKError } from '../utils/errors';
+import { PROTOCOL_CONSTANTS } from '../utils/constants';
 
 export type EventCallback<T = any> = (event: T) => void;
 export type EventFilter = Record<string, any>;
@@ -462,7 +463,7 @@ export class EventService {
 
     try {
       // Subscribe to program logs
-      const programId = new PublicKey(this.config.programId);
+      const programId = new PublicKey(this.config.programId || PROTOCOL_CONSTANTS.PROGRAM_ID);
       
       this.logSubscriptionId = this.connection.onLogs(
         programId,
