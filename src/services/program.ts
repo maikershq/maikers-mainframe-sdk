@@ -153,24 +153,6 @@ export class ProgramService {
       // 4. Calculate fees
       const fee = await this.calculateFee('create_agent', collectionMint);
       
-      // 5. In test/mock mode, return mock result without blockchain interaction
-      // NOTE: skipFees can only be true in test/dev environments due to SDK constructor guards
-      if (process.env.NODE_ENV === 'test' || this.config.development?.skipFees) {
-        const mockSignature = `mock_signature_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-        
-        console.log('✅ Agent activation (mock mode)');
-        console.log(`📎 Agent Account: ${agentAccount.toBase58()}`);
-        console.log(`📎 Metadata URI: ${storage.uri}`);
-        console.log('🧪 Mock Mode: Transaction not sent to blockchain');
-        
-        return {
-          signature: mockSignature,
-          agentAccount: agentAccount.toBase58(),
-          metadataUri: storage.uri,
-          confirmation: { signature: mockSignature, confirmationStatus: 'confirmed' }
-        };
-      }
-      
       // 5. Use Anchor program method to create agent
       if (!this.program) {
         throw ErrorFactory.internalError('Program not initialized');
@@ -272,22 +254,6 @@ export class ProgramService {
       const collectionMint = agentData.collectionMint ? new PublicKey(agentData.collectionMint) : undefined;
       const fee = await this.calculateFee('update_config', collectionMint);
       
-      // Mock mode for tests
-      // NOTE: skipFees can only be true in test/dev environments due to SDK constructor guards
-      if (process.env.NODE_ENV === 'test' || this.config.development?.skipFees) {
-        const mockSignature = `mock_update_${Date.now()}`;
-        console.log('✅ Agent configuration updated (mock mode)');
-        console.log(`📎 New metadata URI: ${storage.uri}`);
-        
-        return {
-          signature: mockSignature,
-          agentAccount,
-          newMetadataUri: storage.uri,
-          version: agentData.version + 1,
-          syncTriggered: true
-        };
-      }
-      
       // Use Anchor program method
       if (!this.program) {
         throw ErrorFactory.internalError('Program not initialized');
@@ -343,18 +309,6 @@ export class ProgramService {
       const agentData = await this.getAgentAccount(agentAccount);
       const collectionMint = agentData.collectionMint ? new PublicKey(agentData.collectionMint) : undefined;
       const fee = await this.calculateFee('transfer_agent', collectionMint);
-      
-      // Mock mode for tests
-      // NOTE: skipFees can only be true in test/dev environments due to SDK constructor guards
-      if (process.env.NODE_ENV === 'test' || this.config.development?.skipFees) {
-        const mockSignature = `mock_transfer_${Date.now()}`;
-        return {
-          signature: mockSignature,
-          agentAccount,
-          oldOwner: agentData.owner,
-          newOwner
-        };
-      }
       
       // Use Anchor program method
       if (!this.program) {
@@ -418,14 +372,6 @@ export class ProgramService {
       const collectionMint = agentData.collectionMint ? new PublicKey(agentData.collectionMint) : undefined;
       const fee = await this.calculateFee('close_agent', collectionMint);
       
-      // Mock mode for tests
-      // NOTE: skipFees can only be true in test/dev environments due to SDK constructor guards
-      if (process.env.NODE_ENV === 'test' || this.config.development?.skipFees) {
-        const mockSignature = `mock_close_${Date.now()}`;
-        console.log('✅ Agent closed (mock mode)');
-        return mockSignature;
-      }
-      
       // Use Anchor program method
       if (!this.program) {
         throw ErrorFactory.internalError('Program not initialized');
@@ -486,29 +432,6 @@ export class ProgramService {
         
         return data;
       } catch (fetchError: any) {
-        // In test mode with mock wallets, return simulated data for testing
-        if (process.env.NODE_ENV === 'test' && 
-            this.config.development?.mockWallet &&
-            fetchError.message?.includes('Account does not exist')) {
-          const { Keypair } = require('@solana/web3.js');
-          const seed = parseInt(agentAccount.slice(0, 8), 36) % 256;
-          const generateTestKeypair = (s: number): typeof Keypair.prototype => {
-            const seedArray = new Uint8Array(32);
-            seedArray[0] = s;
-            return Keypair.fromSeed(seedArray);
-          };
-          
-          return {
-            nftMint: generateTestKeypair(seed + 10).publicKey.toBase58(),
-            owner: this.walletPublicKey?.toBase58() || generateTestKeypair(seed + 11).publicKey.toBase58(),
-            collectionMint: generateTestKeypair(seed + 12).publicKey.toBase58(),
-            metadataUri: 'ipfs://QmTestMetadataHash',
-            status: 'Active',
-            activatedAt: Date.now() - 86400000,
-            updatedAt: Date.now() - 3600000,
-            version: 1
-          };
-        }
         throw fetchError;
       }
       
@@ -548,34 +471,6 @@ export class ProgramService {
         }
       ]);
       
-      // In test mode with mock wallets, return simulated data if no accounts found
-      if (process.env.NODE_ENV === 'test' && 
-          this.config.development?.mockWallet && 
-          accounts.length === 0) {
-        const { Keypair } = require('@solana/web3.js');
-        const generateTestKeypair = (seed: number): typeof Keypair.prototype => {
-          const seedArray = new Uint8Array(32);
-          seedArray[0] = seed;
-          return Keypair.fromSeed(seedArray);
-        };
-        
-        const createMockAgent = (seed: number): AgentAccountData => ({
-          nftMint: generateTestKeypair(seed + 10).publicKey.toBase58(),
-          owner: this.walletPublicKey?.toBase58() || generateTestKeypair(seed + 11).publicKey.toBase58(),
-          collectionMint: generateTestKeypair(seed + 12).publicKey.toBase58(),
-          metadataUri: 'ipfs://QmTestMetadataHash',
-          status: 'Active',
-          activatedAt: Date.now() - 86400000,
-          updatedAt: Date.now() - 3600000,
-          version: 1
-        });
-        
-        return [
-          createMockAgent(13),
-          createMockAgent(14)
-        ];
-      }
-      
       return accounts.map(account => {
         const data: AgentAccountData = {
           nftMint: account.account.nftMint.toBase58(),
@@ -611,41 +506,6 @@ export class ProgramService {
       const accountInfo = await this.connection.getAccountInfo(protocolConfigPda);
       
       if (!accountInfo) {
-        // Return mock data for testing
-        // NOTE: mockWallet can only be true in test environments due to SDK constructor guards
-        if (process.env.NODE_ENV === 'test' || this.config.development?.mockWallet) {
-          const { Keypair } = require('@solana/web3.js');
-          const generateTestKeypair = (seed: number): typeof Keypair.prototype => {
-            const seedArray = new Uint8Array(32);
-            seedArray[0] = seed;
-            return Keypair.fromSeed(seedArray);
-          };
-          
-          return {
-            authority: generateTestKeypair(1).publicKey.toBase58(),
-            manager: generateTestKeypair(2).publicKey.toBase58(),
-            genesisCollectionMint: generateTestKeypair(3).publicKey.toBase58(),
-            fees: {
-              createAgent: 1000000,
-              updateAgentConfig: 500000,
-              transferAgent: 250000,
-              pauseAgent: 100000,
-              closeAgent: 100000,
-              executeAction: 50000
-            },
-            protocolTreasury: generateTestKeypair(4).publicKey.toBase58(),
-            validatorTreasury: generateTestKeypair(5).publicKey.toBase58(),
-            networkTreasury: generateTestKeypair(6).publicKey.toBase58(),
-            protocolTreasuryBps: 5000,
-            validatorTreasuryBps: 3000,
-            networkTreasuryBps: 2000,
-            paused: false,
-            totalAgents: 0,
-            totalPartners: 0,
-            maxPartnerCollections: 100,
-            maxAffiliateBps: 1000
-          };
-        }
         throw ErrorFactory.internalError('Protocol configuration not found on-chain');
       }
 
@@ -773,29 +633,19 @@ export class ProgramService {
       
       const agentData = await this.getAgentAccount(agentAccount);
       
-      // Validate current status (skip in test mode since mock doesn't track state changes)
-      if (process.env.NODE_ENV !== 'test' && !this.config.development?.skipFees) {
-        if (action === 'pause' && agentData.status === 'Paused') {
-          throw ErrorFactory.internalError('Agent is already paused');
-        }
-        if (action === 'resume' && agentData.status === 'Active') {
-          throw ErrorFactory.internalError('Agent is already active');
-        }
-        if (agentData.status === 'Closed') {
-          throw ErrorFactory.internalError('Cannot modify closed agent');
-        }
+      // Validate current status
+      if (action === 'pause' && agentData.status === 'Paused') {
+        throw ErrorFactory.internalError('Agent is already paused');
+      }
+      if (action === 'resume' && agentData.status === 'Active') {
+        throw ErrorFactory.internalError('Agent is already active');
+      }
+      if (agentData.status === 'Closed') {
+        throw ErrorFactory.internalError('Cannot modify closed agent');
       }
       
       const collectionMint = agentData.collectionMint ? new PublicKey(agentData.collectionMint) : undefined;
       const fee = await this.calculateFee('pause_agent', collectionMint);
-      
-      // Mock mode for tests
-      // NOTE: skipFees can only be true in test/dev environments due to SDK constructor guards
-      if (process.env.NODE_ENV === 'test' || this.config.development?.skipFees) {
-        const mockSignature = `mock_${action}_${Date.now()}`;
-        console.log(`✅ Agent ${action}d (mock mode)`);
-        return mockSignature;
-      }
       
       // Use Anchor program method
       if (!this.program) {

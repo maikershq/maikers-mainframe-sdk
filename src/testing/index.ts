@@ -9,12 +9,13 @@ import { MainframeSDK, MainframeSDKFactory } from '../sdk';
 import { MockStorageService } from '../services/storage';
 import { MockWalletService } from '../services/wallet';
 import { MockEventService } from '../services/events';
-import type { 
+import type {
   MainframeConfig, 
   AgentConfig, 
   AgentAccountData,
   EncryptedMetadata,
-  StorageResult
+  StorageResult,
+  ProtocolConfigData
 } from '../types';
 
 // Generate deterministic test keypairs for consistent testing
@@ -62,13 +63,139 @@ export class MockMainframeSDK extends MainframeSDK {
     (this as any).storage = this.mockStorage;
     (this as any).wallet = this.mockWallet;
     (this as any).events = this.mockEvents;
+    
+    // Mock the program service methods
+    this.setupProgramMocks();
+  }
+  
+  /**
+   * Setup mocks for program service methods
+   */
+  private setupProgramMocks(): void {
+    const programService = (this as any).program;
+    if (!programService) return;
+
+    // Store reference to this for use in closures
+    const self = this;
+
+    // Override getProtocolConfig to always return mock data in test environment
+    const originalGetProtocolConfig = programService.getProtocolConfig;
+    programService.getProtocolConfig = async function(this: any): Promise<ProtocolConfigData> {
+      // Always return mock data in test environment
+      return {
+        authority: generateTestKeypair(1).publicKey.toBase58(),
+        manager: generateTestKeypair(2).publicKey.toBase58(),
+        genesisCollectionMint: generateTestKeypair(3).publicKey.toBase58(),
+        fees: {
+          createAgent: 1000000,
+          updateAgentConfig: 500000,
+          transferAgent: 250000,
+          pauseAgent: 100000,
+          closeAgent: 100000,
+          executeAction: 50000
+        },
+        protocolTreasury: generateTestKeypair(4).publicKey.toBase58(),
+        validatorTreasury: generateTestKeypair(5).publicKey.toBase58(),
+        networkTreasury: generateTestKeypair(6).publicKey.toBase58(),
+        protocolTreasuryBps: 5000,
+        validatorTreasuryBps: 3000,
+        networkTreasuryBps: 2000,
+        paused: false,
+        totalAgents: 0,
+        totalPartners: 0,
+        maxPartnerCollections: 100,
+        maxAffiliateBps: 1000
+      };
+    };
+
+    // Override getAgentAccount to always return mock data in test environment
+    const originalGetAgentAccount = programService.getAgentAccount;
+    programService.getAgentAccount = async function(this: any, agentAccount: string): Promise<AgentAccountData> {
+      // Always return mock agent account for testing
+      const seed = parseInt(agentAccount.slice(0, 8), 36) % 256;
+      return {
+        nftMint: generateTestKeypair(seed + 10).publicKey.toBase58(),
+        owner: generateTestKeypair(seed + 11).publicKey.toBase58(),
+        collectionMint: generateTestKeypair(seed + 12).publicKey.toBase58(),
+        metadataUri: 'ipfs://QmTestMetadataHash',
+        status: 'Active',
+        activatedAt: Date.now() - 86400000,
+        updatedAt: Date.now() - 3600000,
+        version: 1
+      };
+    };
+
+    // Override getAllAgentsByOwner to always return mock data in test environment
+    const originalGetAllAgentsByOwner = programService.getAllAgentsByOwner;
+    programService.getAllAgentsByOwner = async function(this: any, owner: PublicKey): Promise<AgentAccountData[]> {
+      // Always return mock agents for testing
+      return [
+        {
+          nftMint: generateTestKeypair(23).publicKey.toBase58(),
+          owner: owner.toBase58(),
+          collectionMint: generateTestKeypair(25).publicKey.toBase58(),
+          metadataUri: 'ipfs://QmTestMetadata1',
+          status: 'Active',
+          activatedAt: Date.now() - 86400000,
+          updatedAt: Date.now() - 3600000,
+          version: 1
+        },
+        {
+          nftMint: generateTestKeypair(24).publicKey.toBase58(),
+          owner: owner.toBase58(),
+          collectionMint: generateTestKeypair(26).publicKey.toBase58(),
+          metadataUri: 'ipfs://QmTestMetadata2',
+          status: 'Active',
+          activatedAt: Date.now() - 172800000,
+          updatedAt: Date.now() - 7200000,
+          version: 1
+        }
+      ];
+    };
+  }
+
+  /**
+   * Override refreshProtocolConfig to return mock data
+   */
+  async refreshProtocolConfig(): Promise<ProtocolConfigData> {
+    return {
+      authority: generateTestKeypair(1).publicKey.toBase58(),
+      manager: generateTestKeypair(2).publicKey.toBase58(),
+      genesisCollectionMint: generateTestKeypair(3).publicKey.toBase58(),
+      fees: {
+        createAgent: 1000000,
+        updateAgentConfig: 500000,
+        transferAgent: 250000,
+        pauseAgent: 100000,
+        closeAgent: 100000,
+        executeAction: 50000
+      },
+      protocolTreasury: generateTestKeypair(4).publicKey.toBase58(),
+      validatorTreasury: generateTestKeypair(5).publicKey.toBase58(),
+      networkTreasury: generateTestKeypair(6).publicKey.toBase58(),
+      protocolTreasuryBps: 5000,
+      validatorTreasuryBps: 3000,
+      networkTreasuryBps: 2000,
+      paused: false,
+      totalAgents: 0,
+      totalPartners: 0,
+      maxPartnerCollections: 100,
+      maxAffiliateBps: 1000
+    };
   }
 
   /**
    * Initialize with automatic wallet connection
    */
   async initializeForTesting(): Promise<void> {
+    // Setup mocks before initialization
+    this.setupProgramMocks();
+    
+    // Initialize (this will try to load protocol config, but our override will provide mock data)
     await this.initialize('Mock Wallet');
+    
+    // Re-apply mocks after initialization
+    this.setupProgramMocks();
   }
 
   /**

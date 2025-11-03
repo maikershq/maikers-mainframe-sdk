@@ -1067,14 +1067,13 @@ export class MainframeSDKFactory {
    * Create SDK with default mainnet configuration
    */
   static createMainnet(options: Partial<MainframeConfig> = {}): MainframeSDK {
-    // Reject mock/development config in mainnet
+    // Reject ANY development/mock config in mainnet
     if (options.development) {
-      if (options.development.mockWallet || options.development.mockStorage || options.development.skipFees) {
-        throw new Error(
-          'Cannot create mainnet SDK with development config (mockWallet, mockStorage, skipFees). ' +
-          'These options are only allowed in test environments. Use createDevnet() for development or createMock() for testing.'
-        );
-      }
+      throw new Error(
+        'Cannot create mainnet SDK with development config. ' +
+        'Development options (mockWallet, mockStorage, skipFees) are strictly prohibited in production. ' +
+        'Use createDevnet() for development or createMock() for unit testing only.'
+      );
     }
     
     const defaultConfig: MainframeConfig = {
@@ -1097,6 +1096,14 @@ export class MainframeSDKFactory {
    * Create SDK with devnet configuration
    */
   static createDevnet(options: Partial<MainframeConfig> = {}): MainframeSDK {
+    // Reject mock configs in devnet too (devnet should use real transactions)
+    if (options.development?.mockWallet || options.development?.mockStorage || options.development?.skipFees) {
+      throw new Error(
+        'Cannot create devnet SDK with mock config (mockWallet, mockStorage, skipFees). ' +
+        'These options are only allowed in unit tests. Use createMock() for testing.'
+      );
+    }
+    
     const defaultConfig: MainframeConfig = {
       solanaNetwork: 'devnet',
       rpcEndpoint: 'https://api.devnet.solana.com',
@@ -1106,11 +1113,6 @@ export class MainframeSDKFactory {
         arweave: {
           gateway: 'https://arweave.net'
         }
-      },
-      development: {
-        mockWallet: false,
-        mockStorage: false,
-        logLevel: 'debug'
       }
     };
 
