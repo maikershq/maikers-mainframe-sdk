@@ -5,6 +5,59 @@ All notable changes to the Mainframe SDK will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2025-11-03
+
+### 📚 **Critical Documentation Fix**
+
+**Fixed Affiliate Program Documentation:**
+- ✅ Corrected parameter names: `seller` → `affiliate`, added `referrer` parameter
+- ✅ Updated to tier-based commission structure (Bronze 15% → Diamond 50%)
+- ✅ Added auto-initialization documentation
+- ✅ Documented multi-level referrals (10% L1, 5% L2)
+- ✅ Added milestone bonuses, streak bonuses, and achievement systems
+- ✅ Fixed all code examples with correct SDK usage
+- ✅ Added comprehensive tier progression tables and revenue projections
+
+**The previous affiliate documentation was completely incorrect with wrong parameter names and commission structure. This release corrects all affiliate integration examples.**
+
+### 🔧 **No Code Changes**
+- Documentation-only release
+- All existing v1.2.0 functionality remains unchanged
+- No breaking changes
+
+## [1.2.1] - 2025-11-03
+
+### 📚 **Documentation Updates**
+
+**Synced with Mainframe v1.0.0 Program:**
+- Updated all documentation to reflect mainframe v1.0.0 program specifications
+- Synced IDL and types from latest mainframe program build
+- Corrected fee structure documentation (0.05 SOL create, 0.005 SOL update, 0.01 SOL transfer)
+- Added elizaOS framework references throughout documentation
+- Clarified one-sided transfer operation (new owner only, no previous owner signature required)
+
+**Storage & Configuration:**
+- Removed all IPFS references (deprecated in v1.0.5)
+- Updated storage examples to show Arweave-only configuration
+- Clarified protocolWallet deprecation (v1.2.0) - treasury addresses fetched from blockchain
+- Updated quickstart examples with current best practices
+
+**Architecture & Implementation:**
+- Added protocol configuration section explaining on-chain config integration
+- Updated cache documentation to reflect real hit/miss tracking implementation
+- Improved security and encryption service descriptions
+- Enhanced affiliate program documentation with accurate commission rates
+
+**Link Verification:**
+- Verified all internal documentation links
+- Updated repository references
+- Ensured consistent cross-referencing between docs
+
+### 🔧 **No Code Changes**
+- This is a documentation-only release
+- All existing v1.2.0 functionality remains unchanged
+- No breaking changes
+
 ## [1.2.0] - 2025-11-03
 
 ### 🎯 **Breaking Changes**

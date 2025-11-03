@@ -11,12 +11,12 @@ The SDK consists of several key services and production utilities designed for e
 - **Key derivation** from Ed25519 to Curve25519 for sealed boxes
 
 ### Storage Service
-- **Arweave primary storage** for permanent, immutable metadata storage  
-- **IPFS fallback** with HTTP API and pinning support
-- **Automatic failover** and redundancy mechanisms
+- **Arweave permanent storage** for immutable metadata storage  
+- **Production-ready** with permanent data guarantees
 - **Intelligent caching** with multi-tier TTL expiration
+- **Transaction signing** and posting to Arweave network
 
-**CRITICAL WARNING**: Changing the primary storage provider after agent creation may cause agents to halt if metadata becomes unavailable at the original URI. Arweave is the recommended default for production due to its permanent storage guarantees.
+**NOTE**: IPFS support was removed in v1.0.5. Arweave is the only storage provider, ensuring permanent, immutable metadata storage for production agents.
 
 ### Program Service
 - **Anchor program integration** for Solana transactions
@@ -47,7 +47,7 @@ The SDK consists of several key services and production utilities designed for e
 
 ### Performance Layer
 - **Connection Pool**: Intelligent RPC connection management
-- **LRU Cache**: Multi-tier caching with configurable TTL
+- **LRU Cache**: Multi-tier caching with real cache hit/miss tracking
 - **Batch Processor**: Smart operation batching with retry logic
 - **Metrics Collector**: Real-time performance monitoring
 - **Memory Manager**: Automatic resource optimization and cleanup
@@ -151,5 +151,31 @@ const versionedTx = await sdk.createVersionedTransaction(nftMint, agentConfig, {
 const signature = await wallet.sendTransaction(versionedTx, connection);
 ```
 
+## Protocol Configuration
 
+### On-Chain Config Integration (v1.2.0+)
 
+The SDK automatically fetches protocol configuration from the blockchain during initialization:
+
+```typescript
+// Protocol config cached on initialization
+const sdk = createMainnetSDK({ ... });
+await sdk.initialize("Phantom");
+
+// Access cached protocol config
+const config = sdk.getProtocolConfig();
+console.log("Treasury addresses:", config.treasuryAddresses);
+console.log("Fee structure:", config.fees);
+console.log("Distribution:", config.distribution);
+
+// Manually refresh from blockchain
+await sdk.refreshProtocolConfig();
+```
+
+**Includes:**
+- Treasury wallet addresses (protocol, validator, network)
+- Fee structure for all operations
+- Distribution percentages (basis points)
+- Partner collection discounts
+- Genesis collection (zero fees)
+- Protocol pause status

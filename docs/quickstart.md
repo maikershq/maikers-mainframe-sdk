@@ -12,8 +12,8 @@ Mainframe SDK is a production-ready TypeScript client that provides:
 
 - **Agent Management**: Create, update, transfer, and monitor AI agents linked to NFTs
 - **Client-Side Encryption**: Zero-knowledge architecture with XChaCha20-Poly1305 AEAD
-- **Storage Integration**: Seamless IPFS/Arweave integration with automatic failover
-- **Framework Support**: First-class integration with Anchor, Wallet Adapter, and more
+- **Storage Integration**: Permanent Arweave storage for metadata
+- **Framework Support**: First-class integration with Anchor, Wallet Adapter, elizaOS, and more
 - **Production Features**: Rate limiting, circuit breakers, caching, and monitoring
 
 ### SDK Architecture
@@ -45,14 +45,14 @@ Mainframe SDK is a production-ready TypeScript client that provides:
 
 | Operation | Purpose | Fee | Access Required |
 |-----------|---------|-----|-----------------|
-| `createAgent` | Link NFT to AI agent | 0.01 SOL* | NFT ownership |
-| `updateAgent` | Update agent configuration | 0.0025 SOL* | Agent ownership |
-| `transferAgent` | Transfer agent ownership | 0.001 SOL* | Both parties |
+| `createAgent` | Link NFT to AI agent | 0.05 SOL* | NFT ownership |
+| `updateAgent` | Update agent configuration | 0.005 SOL* | Agent ownership |
+| `transferAgent` | Transfer agent ownership | 0.01 SOL* | New owner only |
 | `pauseAgent` | Pause agent operations | FREE | Agent ownership |
 | `resumeAgent` | Resume agent operations | FREE | Agent ownership |
 | `closeAgent` | Permanent shutdown | FREE | Agent ownership |
 
-*Fees vary by collection tier (Genesis: free, Partners: discounted)
+*Fees vary by collection tier (Genesis: free, Partners: 25-75% off)
 
 ## Installation
 
@@ -99,18 +99,11 @@ const sdk = createMainnetSDK({
   // programId defaults to mainnet: mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE
   // protocolWallet deprecated - treasury addresses fetched from on-chain config
   
-  // Storage configuration
+  // Storage configuration (Arweave only - IPFS removed in v1.0.5)
   storage: {
-    primary: 'arweave',      // Permanent storage for production
-    fallback: ['ipfs'],      // Automatic failover
     arweave: {
       gateway: "https://arweave.net",
       bundler: "https://node2.bundlr.network"
-    },
-    ipfs: {
-      gateway: "https://ipfs.io/ipfs/",
-      api: "https://api.pinata.cloud",
-      apiKey: process.env.PINATA_JWT
     }
   }
 });
@@ -153,15 +146,13 @@ const provider = new AnchorProvider(connection, wallet, {
 });
 
 const sdk = createAnchorMainframeSDK(provider, {
-  protocolWallet: "PROTOCOL_WALLET_PUBKEY",
+  // protocolWallet deprecated - fetched from on-chain config
 });
 
 await sdk.initializeWithProvider(provider);
 
 // Method 2: Using QuickStart helper
-const sdk2 = QuickStartIntegrations.anchor(provider, {
-  protocolWallet: "PROTOCOL_WALLET_PUBKEY",
-});
+const sdk2 = QuickStartIntegrations.anchor(provider);
 
 // Create agent with priority fees (Anchor pattern)
 const result = await sdk.createAgentWithPriorityFee(
@@ -190,8 +181,7 @@ function AgentManager() {
     wallet?.adapter,
     connection,
     {
-      programId: "mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE",
-      protocolWallet: "PROTOCOL_WALLET_PUBKEY"
+      // programId defaults to mainnet, protocolWallet deprecated
     }
   );
   
@@ -222,8 +212,8 @@ import { QuickStartIntegrations } from "@maikers/mainframe-sdk";
 // Automatically detect and use available integration
 const sdk = QuickStartIntegrations.auto({
   config: {
-    programId: "mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE",
-    protocolWallet: "PROTOCOL_WALLET_PUBKEY"
+    // programId defaults to mainnet
+    // protocolWallet deprecated - fetched from blockchain
   },
   
   // Provide what you have available
@@ -436,8 +426,9 @@ console.log("✅ Agent configuration updated");
 ```typescript
 const newOwner = new PublicKey("NEW_OWNER_WALLET_ADDRESS");
 
-// One-sided operation: only new NFT owner signs and pays to claim control
+// One-sided operation: only new NFT owner signs and pays (0.01 SOL)
 // The connected wallet must own the NFT to successfully claim the agent
+// Previous owner signature NOT required
 await sdk.transferAgent(agentAccount, newOwner);
 
 console.log("✅ Agent ownership transferred to:", newOwner.toString());
@@ -592,16 +583,16 @@ try {
 4. Test thoroughly on devnet before mainnet deployment
 
 ### For Production Deployment
-1. Review the [Deployment Guide](deployment.md) for production checklist
+1. Review the [Deployment Guide](DEPLOYMENT.md) for production checklist
 2. Configure proper monitoring and alerting
-3. Implement security best practices from the [Security Guide](security.md)
-4. Set up performance monitoring using the [Performance Guide](performance.md)
+3. Implement security best practices from the [Security Guide](SECURITY.md)
+4. Set up performance monitoring using the [Performance Guide](PERFORMANCE.md)
 
 ### For Advanced Usage
-1. Study the [Architecture Guide](architecture.md) for deep technical understanding
+1. Study the [Architecture Guide](ARCHITECTURE.md) for deep technical understanding
 2. Explore batch operations and optimization strategies
 3. Implement custom monitoring and analytics dashboards
-4. Review the [API Reference](api.md) for complete SDK capabilities
+4. Review the [API Reference](API.md) for complete SDK capabilities
 
 This quick start guide provides the foundation for working with the Mainframe SDK. For detailed technical specifications and advanced features, refer to the complete documentation.
 

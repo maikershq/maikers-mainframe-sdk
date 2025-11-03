@@ -21,6 +21,8 @@
 
 The Mainframe SDK enables developers to create AI agents from verified NFT collections on Solana. Unlike other solutions that require custom integrations, Mainframe leverages Solana's native `Collection.verified = true` requirement - creating a permissionless yet secure system where any verified collection can participate in the agentic economy.
 
+Built on **Mainframe v1.0.0** program (`mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE`) with elizaOS framework integration.
+
 Perfect for DeFi trading bots, NFT collection management, gaming agents, social media automation, and any application requiring intelligent blockchain interactions.
 
 ## Features
@@ -42,19 +44,20 @@ npm install @maikers/mainframe-sdk
 ```typescript
 import { createMainnetSDK } from "@maikers/mainframe-sdk";
 
-// Initialize SDK
+// Initialize SDK (protocolWallet deprecated - fetched from on-chain config)
 const sdk = createMainnetSDK({ 
-  storage: { primary: 'arweave' } 
+  storage: { arweave: { gateway: 'https://arweave.net' } }
 });
 await sdk.initialize("Phantom");
 
-// Create AI agent from verified NFT
+// Create AI agent from verified NFT (0.05 SOL fee*)
 const result = await sdk.createAgent(nftMint, {
   name: "Trading Assistant",
   description: "DeFi trading bot", 
   framework: "elizaOS",
   capabilities: [{ type: "defi", plugins: ["jupiter-swap"] }]
 });
+// *Fee varies: Genesis collection (FREE), Partner collections (25-75% off)
 ```
 
 **[Complete Examples →](examples/)** | **[Full Documentation →](docs/)**
@@ -110,19 +113,19 @@ import { QuickStartIntegrations } from "@maikers/mainframe-sdk";
 const sdk = QuickStartIntegrations.anchor(provider);
 ```
 
-**[Integration Examples →](docs/integration.md)** | **[API Reference →](docs/api.md)**
+**[Integration Examples →](docs/integration.md)** | **[API Reference →](docs/API.md)**
 
 ## Documentation
 
 | Guide | Description |
 |-------|-------------|
 | **[Quick Start](docs/quickstart.md)** | Get up and running in minutes |
-| **[API Reference](docs/api.md)** | Complete method documentation |
-| **[Security Model](docs/security.md)** | Architecture and best practices |
+| **[API Reference](docs/API.md)** | Complete method documentation |
+| **[Security Model](docs/SECURITY.md)** | Architecture and best practices |
 | **[Integration Examples](docs/integration.md)** | Framework-specific patterns |
-| **[Performance Guide](docs/performance.md)** | Optimization strategies |
+| **[Performance Guide](docs/PERFORMANCE.md)** | Optimization strategies |
 | **[Release Management](docs/releases.md)** | Versioning and publishing guide |
-| **[Troubleshooting](docs/troubleshooting.md)** | Common issues and solutions |
+| **[Troubleshooting](docs/TROUBLESHOOTING.md)** | Common issues and solutions |
 
 ## Development
 
@@ -132,7 +135,7 @@ cd maikers-mainframe-sdk
 pnpm install && pnpm run build
 ```
 
-**[Contributing Guide →](docs/contributing.md)** | **[Development Setup →](docs/development.md)** | **[Release Process →](docs/releases.md)**
+**[Contributing Guide →](docs/CONTRIBUTING.md)** | **[Development Setup →](docs/development.md)** | **[Release Process →](docs/releases.md)**
 
 ## Resources
 
