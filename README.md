@@ -64,13 +64,13 @@ const result = await sdk.createAgent(nftMint, {
 
 ## Revenue Sharing
 
-Earn commission on every agent activation through the **advanced affiliate system**:
+Earn commission on every agent activation through the **tier-based affiliate system**:
 
 ```typescript
 // Create agent with affiliate revenue
 const result = await sdk.createAgent(nftMint, agentConfig, {
   affiliate: 'YOUR_WALLET_ADDRESS',
-  referrer: 'OPTIONAL_REFERRER_ADDRESS'  // For multi-level rewards
+  referrer: 'OPTIONAL_REFERRER_ADDRESS'  // For 5% referrer bonus
 });
 
 // Track earnings
@@ -81,20 +81,20 @@ sdk.events.onAffiliatePaid((event) => {
 
 ### Affiliate Tiers & Commission Rates
 
-| Tier | Sales Required | Commission Rate | + Streak Bonus |
-|------|----------------|-----------------|----------------|
-| 🥉 Bronze | 0-99 | **15%** | up to +15% |
-| 🥈 Silver | 100-499 | **20%** | up to +15% |
-| 🥇 Gold | 500-1,999 | **30%** | up to +15% |
-| 💎 Platinum | 2,000-9,999 | **40%** | up to +15% |
-| 💎💎 Diamond | 10,000+ | **50%** | up to +15% |
+| Tier | Sales Required | Commission Rate |
+|------|----------------|-----------------|
+| 🥉 Bronze | 0-99 | **15%** |
+| 🥈 Silver | 100-499 | **20%** |
+| 🥇 Gold | 500-1,999 | **30%** |
+| 💎 Platinum | 2,000-9,999 | **40%** |
+| 💎💎 Diamond | 10,000+ | **50%** |
 
 **Features:**
 - ✅ Permissionless participation - no registration required
 - ✅ Auto-initialize on first commission
-- ✅ Tier progression based on sales
-- ✅ Multi-level referrals (earn from your referrals' sales)
-- ✅ Milestone bonuses from 0.1 SOL to 1000 SOL
+- ✅ Tier progression based on lifetime sales
+- ✅ Single-level referrals (earn 5% from your referrals' commissions)
+- ✅ Custom bonuses for promotions (set by protocol authority)
 - ✅ Instant on-chain payouts
 
 **[Affiliate Program Details →](docs/affiliate-program.md)**

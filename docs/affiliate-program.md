@@ -11,26 +11,25 @@ The Mainframe protocol includes a **tier-based affiliate system** that automatic
 - ✅ **Permissionless Participation** - No pre-registration required, just provide wallet address
 - ✅ **Auto-Initialize** - First commission automatically creates your affiliate account
 - ✅ **Tier-Based Commission** - Earn 15-50% based on lifetime sales performance
-- ✅ **Streak Bonuses** - Up to +15% for consistent sales activity
-- ✅ **Milestone Rewards** - Bonuses from 0.1 SOL to 1000 SOL
-- ✅ **Multi-Level Referrals** - Earn from your referrals' sales (10% L1, 5% L2)
+- ✅ **Custom Bonuses** - Protocol can set special rates for promotions (`bonus_bps`)
+- ✅ **Single-Level Referrals** - Earn 5% of your direct referrals' commissions
 - ✅ **Instant Payouts** - Commission paid on-chain in real-time
-- ✅ **Competition Seasons** - Win from prize pools
-- ✅ **Achievement NFTs** - Earn badges for milestones
 
 ## Tier Structure
 
 ### Commission Rates
 
-| Tier | Sales Threshold | Base Commission | + Streak Bonus | Monthly (100 sales) | Monthly (500 sales) |
-|------|----------------|-----------------|----------------|---------------------|---------------------|
-| 🥉 Bronze | 0-99 | **15%** | up to +15% | 0.75 SOL | 3.75 SOL |
-| 🥈 Silver | 100-499 | **20%** | up to +15% | 1 SOL | 5 SOL |
-| 🥇 Gold | 500-1,999 | **30%** | up to +15% | 1.5 SOL | 7.5 SOL |
-| 💎 Platinum | 2,000-9,999 | **40%** | up to +15% | 2 SOL | 10 SOL |
-| 💎💎 Diamond | 10,000+ | **50%** | up to +15% | 2.5 SOL | 12.5 SOL |
+| Tier | Sales Threshold | Commission Rate | Monthly (100 sales) | Monthly (500 sales) |
+|------|----------------|-----------------|---------------------|---------------------|
+| 🥉 Bronze | 0-99 | **15%** | 0.75 SOL | 3.75 SOL |
+| 🥈 Silver | 100-499 | **20%** | 1 SOL | 5 SOL |
+| 🥇 Gold | 500-1,999 | **30%** | 1.5 SOL | 7.5 SOL |
+| 💎 Platinum | 2,000-9,999 | **40%** | 2 SOL | 10 SOL |
+| 💎💎 Diamond | 10,000+ | **50%** | 2.5 SOL | 12.5 SOL |
 
 *Based on 0.05 SOL standard activation fee
+
+**Custom Bonuses:** Protocol authority can set additional `bonus_bps` for special promotions or partnerships, added to tier commission (capped at protocol maximum).
 
 ### Tier Progression Rules
 
@@ -40,27 +39,26 @@ The Mainframe protocol includes a **tier-based affiliate system** that automatic
 - **Automatic Upgrade**: Tiers update automatically as sales accumulate
 - **All Sales Equal**: Each agent activation counts as 1 sale
 
-## Milestone Bonuses
+## Single-Level Referral System
 
-Earn one-time bonus rewards when reaching sales milestones:
+Build passive income by referring other affiliates. When you refer someone who becomes an affiliate, you earn **5% of their commissions**:
 
-| Sales Milestone | Bonus Reward | Cumulative Total |
-|-----------------|--------------|------------------|
-| 10 sales | 0.1 SOL | 0.1 SOL |
-| 50 sales | 1 SOL | 1.1 SOL |
-| 100 sales | 5 SOL | 6.1 SOL |
-| 500 sales | 50 SOL | 56.1 SOL |
-| 1,000 sales | 150 SOL | 206.1 SOL |
-| 5,000 sales | 1,000 SOL | 1,206.1 SOL |
+- **Direct Referrals Only**: Single-level system to prevent referral chain saturation
+- **Automatic Tracking**: Referrer set when affiliate registers
+- **Instant Payouts**: Referrer commission paid automatically with affiliate commission
 
-## Multi-Level Referrals
+**Example**: 
+```
+User creates agent → 0.05 SOL fee
+├─ Your referral (Bronze, 15%) earns → 0.0075 SOL
+└─ You (referrer) earn 5% of commission → 0.000375 SOL (5% of 0.0075 SOL)
+```
 
-Build passive income by referring other affiliates:
-
-- **Level 1 (Direct Referrals)**: Earn 10% of your referrals' commissions
-- **Level 2 (Second-Level)**: Earn 5% of second-level referrals' commissions
-
-**Example**: If your referral (Level 1) earns 0.75 SOL commission, you automatically earn 0.075 SOL (10%).
+**How It Works:**
+1. You refer an affiliate by providing your wallet address
+2. They register: `register_affiliate(referrer: Your_Wallet)`
+3. When they earn commission, you automatically receive 5%
+4. Tracked on-chain in `AffiliateAccount.referree_revenue`
 
 ## Implementation
 
@@ -198,24 +196,26 @@ Total Activation Fee: 0.05 SOL (100%)
 
 ### Distribution Examples
 
-**Bronze Affiliate (15%):**
+**Bronze Affiliate (15%), no referrer:**
 ```
 Total Fee: 0.05 SOL (50,000,000 lamports)
 ├─ Bronze Affiliate: 0.0075 SOL (15%)
+├─ Referrer: 0 SOL (no referrer)
 └─ Remaining: 0.0425 SOL
    ├─ Protocol: 0.02125 SOL (50%)
    ├─ Validators: 0.01275 SOL (30%)
    └─ Network: 0.0085 SOL (20%)
 ```
 
-**Diamond Affiliate (50%):**
+**Diamond Affiliate (50%), with referrer:**
 ```
 Total Fee: 0.05 SOL (50,000,000 lamports)
 ├─ Diamond Affiliate: 0.025 SOL (50%)
-└─ Remaining: 0.025 SOL
-   ├─ Protocol: 0.0125 SOL (50%)
-   ├─ Validators: 0.0075 SOL (30%)
-   └─ Network: 0.005 SOL (20%)
+├─ Referrer: 0.00125 SOL (5% of affiliate commission)
+└─ Remaining: 0.02375 SOL
+   ├─ Protocol: 0.011875 SOL (50%)
+   ├─ Validators: 0.007125 SOL (30%)
+   └─ Network: 0.004750 SOL (20%)
 ```
 
 ## Revenue Projections
@@ -334,11 +334,11 @@ class AffiliateAnalytics {
 Track key affiliate performance indicators:
 
 - **Conversion Rate**: Visitors → Agent Creations
-- **Average Commission Rate**: Based on current tier
+- **Average Commission Rate**: Based on current tier + bonus
 - **Revenue per Referral**: Total earnings ÷ successful referrals
 - **Tier Progression**: Time to reach each tier milestone
-- **Multi-Level Earnings**: L1 + L2 referral income
-- **Streak Status**: Current consecutive days with sales
+- **Referral Earnings**: Revenue from referred affiliates (5%)
+- **Total Revenue**: Direct commissions + referrer commissions
 
 ## Validation & Security
 
@@ -449,8 +449,8 @@ A: No, fees remain constant. Commission comes from protocol share.
 **Q: Can tiers decrease?**  
 A: No, tiers are permanent once achieved (except for fraud violations).
 
-**Q: How do multi-level referrals work?**  
-A: Earn 10% from direct referrals (L1) and 5% from their referrals (L2).
+**Q: How do referrals work?**  
+A: Single-level only. Earn 5% of your direct referrals' commissions. Register with `register_affiliate(referrer: Wallet)`.
 
 **Q: Are there minimum payout thresholds?**  
 A: No, every commission is paid immediately regardless of amount.
