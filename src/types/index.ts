@@ -61,7 +61,7 @@ export interface AgentConfig {
   capabilities: AgentCapability[];
   
   // Technical Configuration
-  framework: 'elizaOS';
+  framework: 'FrameClaw';
   plugins: PluginConfig[];
   runtime: RuntimeConfig;
   
@@ -517,7 +517,7 @@ export const AgentConfigSchema = z.object({
     plugins: z.array(z.string()).min(1),
     config: z.record(z.any())
   })).min(1),
-  framework: z.literal('elizaOS'),
+  framework: z.literal('FrameClaw'),
   plugins: z.array(z.object({
     id: z.string(),
     version: z.string(),

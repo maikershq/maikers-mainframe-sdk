@@ -75,7 +75,7 @@ describe('Encryption Security Audit', () => {
       plugins: ['test-plugin'],
       config: {}
     }],
-    framework: 'elizaOS',
+    framework: 'FrameClaw',
     plugins: [{
       id: 'test-plugin',
       version: '1.0.0',
@@ -543,7 +543,7 @@ describe('Encryption Security Audit', () => {
             config: { dataSource: 'mainnet', refreshInterval: 60000 }
           }
         ],
-        framework: 'elizaOS',
+        framework: 'FrameClaw',
         plugins: [
           {
             id: 'jupiter-aggregator',

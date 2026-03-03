@@ -52,7 +52,7 @@ async function anchorIntegrationExample() {
         plugins: ['anchor-program-interactions'],
         config: { useAnchor: true }
       }],
-      framework: 'elizaOS',
+      framework: 'FrameClaw',
       plugins: [],
       runtime: {
         memory: { type: 'memory' },

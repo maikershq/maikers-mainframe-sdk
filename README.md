@@ -21,7 +21,7 @@
 
 The Mainframe SDK enables developers to create AI agents from verified NFT collections on Solana. Unlike other solutions that require custom integrations, Mainframe leverages Solana's native `Collection.verified = true` requirement - creating a permissionless yet secure system where any verified collection can participate in the agentic economy.
 
-Built on **Mainframe v1.0.0** program (`mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE`) with elizaOS framework integration.
+Built on **Mainframe v1.0.0** program (`mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE`) with FrameClaw framework integration.
 
 Perfect for DeFi trading bots, NFT collection management, gaming agents, social media automation, and any application requiring intelligent blockchain interactions.
 
@@ -54,7 +54,7 @@ await sdk.initialize("Phantom");
 const result = await sdk.createAgent(nftMint, {
   name: "Trading Assistant",
   description: "DeFi trading bot", 
-  framework: "elizaOS",
+  framework: "FrameClaw",
   capabilities: [{ type: "defi", plugins: ["jupiter-swap"] }]
 });
 // *Fee varies: Genesis collection (FREE), Partner collections (25-75% off)

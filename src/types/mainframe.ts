@@ -5,21 +5,21 @@
  * IDL can be found at `target/idl/mainframe.json`.
  */
 export type Mainframe = {
-  "address": "mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE",
-  "metadata": {
-    "name": "mainframe",
-    "version": "1.0.0",
-    "spec": "0.1.0",
-    "description": "keep calm and let the mainframe handle it."
+  'address': 'mnfm211AwTDA8fGvPezYs3jjxAXgoucHGuTMUbjFssE',
+  'metadata': {
+    'name': 'mainframe',
+    'version': '1.0.0',
+    'spec': '0.1.0',
+    'description': 'keep calm and let the mainframe handle it.'
   },
-  "instructions": [
+  'instructions': [
     {
-      "name": "acceptAuthorityTransfer",
-      "docs": [
-        "Accept authority transfer (step 2 of 2-step transfer)",
-        "New authority must explicitly accept"
+      'name': 'acceptAuthorityTransfer',
+      'docs': [
+        'Accept authority transfer (step 2 of 2-step transfer)',
+        'New authority must explicitly accept'
       ],
-      "discriminator": [
+      'discriminator': [
         239,
         248,
         177,
@@ -29,15 +29,15 @@ export type Mainframe = {
         46,
         255
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -59,19 +59,19 @@ export type Mainframe = {
           }
         },
         {
-          "name": "newAuthority",
-          "writable": true,
-          "signer": true
+          'name': 'newAuthority',
+          'writable': true,
+          'signer': true
         }
       ],
-      "args": []
+      'args': []
     },
     {
-      "name": "addPartnerCollection",
-      "docs": [
-        "Add partner collection"
+      'name': 'addPartnerCollection',
+      'docs': [
+        'Add partner collection'
       ],
-      "discriminator": [
+      'discriminator': [
         253,
         201,
         44,
@@ -81,15 +81,15 @@ export type Mainframe = {
         107,
         221
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "partnerAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'partnerAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   97,
                   114,
@@ -100,20 +100,20 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "arg",
-                "path": "collectionMint"
+                'kind': 'arg',
+                'path': 'collectionMint'
               }
             ]
           }
         },
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -135,37 +135,37 @@ export type Mainframe = {
           }
         },
         {
-          "name": "signer",
-          "writable": true,
-          "signer": true
+          'name': 'signer',
+          'writable': true,
+          'signer': true
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
+          'name': 'systemProgram',
+          'address': '11111111111111111111111111111111'
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "collection",
-          "type": "pubkey"
+          'name': 'collection',
+          'type': 'pubkey'
         },
         {
-          "name": "discountPercent",
-          "type": "u8"
+          'name': 'discountPercent',
+          'type': 'u8'
         },
         {
-          "name": "name",
-          "type": "string"
+          'name': 'name',
+          'type': 'string'
         }
       ]
     },
     {
-      "name": "cancelAuthorityTransfer",
-      "docs": [
-        "Cancel pending authority transfer",
-        "Current authority can cancel if needed"
+      'name': 'cancelAuthorityTransfer',
+      'docs': [
+        'Cancel pending authority transfer',
+        'Current authority can cancel if needed'
       ],
-      "discriminator": [
+      'discriminator': [
         94,
         131,
         125,
@@ -175,15 +175,15 @@ export type Mainframe = {
         125,
         229
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -205,19 +205,19 @@ export type Mainframe = {
           }
         },
         {
-          "name": "authority",
-          "writable": true,
-          "signer": true
+          'name': 'authority',
+          'writable': true,
+          'signer': true
         }
       ],
-      "args": []
+      'args': []
     },
     {
-      "name": "closeAgent",
-      "docs": [
-        "Close agent permanently"
+      'name': 'closeAgent',
+      'docs': [
+        'Close agent permanently'
       ],
-      "discriminator": [
+      'discriminator': [
         52,
         185,
         104,
@@ -227,15 +227,15 @@ export type Mainframe = {
         87,
         237
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "agentAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'agentAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   97,
                   103,
                   101,
@@ -244,31 +244,31 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "account",
-                "path": "agent_account.nft_mint",
-                "account": "agentAccount"
+                'kind': 'account',
+                'path': 'agent_account.nft_mint',
+                'account': 'agentAccount'
               }
             ]
           }
         },
         {
-          "name": "nftTokenAccount",
-          "docs": [
-            "NFT token account - validates current owner actually owns the NFT"
+          'name': 'nftTokenAccount',
+          'docs': [
+            'NFT token account - validates current owner actually owns the NFT'
           ]
         },
         {
-          "name": "owner",
-          "writable": true,
-          "signer": true
+          'name': 'owner',
+          'writable': true,
+          'signer': true
         },
         {
-          "name": "protocolConfig",
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -290,14 +290,14 @@ export type Mainframe = {
           }
         }
       ],
-      "args": []
+      'args': []
     },
     {
-      "name": "closeAgentAccount",
-      "docs": [
-        "Close agent account and recover rent (Protocol only)"
+      'name': 'closeAgentAccount',
+      'docs': [
+        'Close agent account and recover rent (Protocol only)'
       ],
-      "discriminator": [
+      'discriminator': [
         142,
         71,
         98,
@@ -307,15 +307,15 @@ export type Mainframe = {
         41,
         115
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "agentAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'agentAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   97,
                   103,
                   101,
@@ -324,31 +324,31 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "account",
-                "path": "agent_account.nft_mint",
-                "account": "agentAccount"
+                'kind': 'account',
+                'path': 'agent_account.nft_mint',
+                'account': 'agentAccount'
               }
             ]
           }
         },
         {
-          "name": "authority",
-          "docs": [
-            "Protocol authority that can close accounts for rent recovery"
+          'name': 'authority',
+          'docs': [
+            'Protocol authority that can close accounts for rent recovery'
           ],
-          "writable": true,
-          "signer": true
+          'writable': true,
+          'signer': true
         },
         {
-          "name": "protocolConfig",
-          "docs": [
-            "Protocol configuration to validate authority"
+          'name': 'protocolConfig',
+          'docs': [
+            'Protocol configuration to validate authority'
           ],
-          "pda": {
-            "seeds": [
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -370,21 +370,21 @@ export type Mainframe = {
           }
         },
         {
-          "name": "rentReceiver",
-          "docs": [
-            "Account that receives the recovered rent (protocol treasury)"
+          'name': 'rentReceiver',
+          'docs': [
+            'Account that receives the recovered rent (protocol treasury)'
           ],
-          "writable": true
+          'writable': true
         }
       ],
-      "args": []
+      'args': []
     },
     {
-      "name": "createAgent",
-      "docs": [
-        "Create new agent from NFT"
+      'name': 'createAgent',
+      'docs': [
+        'Create new agent from NFT'
       ],
-      "discriminator": [
+      'discriminator': [
         143,
         66,
         198,
@@ -394,15 +394,15 @@ export type Mainframe = {
         83,
         249
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "agentAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'agentAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   97,
                   103,
                   101,
@@ -411,35 +411,35 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "arg",
-                "path": "nftMint"
+                'kind': 'arg',
+                'path': 'nftMint'
               }
             ]
           }
         },
         {
-          "name": "owner",
-          "writable": true,
-          "signer": true
+          'name': 'owner',
+          'writable': true,
+          'signer': true
         },
         {
-          "name": "nftTokenAccount",
-          "docs": [
-            "NFT token account owned by the user",
-            "Simple validation: owner has the NFT (amount = 1)"
+          'name': 'nftTokenAccount',
+          'docs': [
+            'NFT token account owned by the user',
+            'Simple validation: owner has the NFT (amount = 1)'
           ]
         },
         {
-          "name": "protocolConfig",
-          "docs": [
-            "Protocol configuration"
+          'name': 'protocolConfig',
+          'docs': [
+            'Protocol configuration'
           ],
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -461,96 +461,96 @@ export type Mainframe = {
           }
         },
         {
-          "name": "protocolTreasury",
-          "docs": [
-            "Fee distribution accounts"
+          'name': 'protocolTreasury',
+          'docs': [
+            'Fee distribution accounts'
           ],
-          "writable": true
+          'writable': true
         },
         {
-          "name": "validatorTreasury",
-          "writable": true
+          'name': 'validatorTreasury',
+          'writable': true
         },
         {
-          "name": "networkTreasury",
-          "writable": true
+          'name': 'networkTreasury',
+          'writable': true
         },
         {
-          "name": "affiliate",
-          "docs": [
-            "Optional affiliate wallet (receives commission)",
-            "Can be zero-balance - will be funded by first commission"
+          'name': 'affiliate',
+          'docs': [
+            'Optional affiliate wallet (receives commission)',
+            'Can be zero-balance - will be funded by first commission'
           ],
-          "writable": true,
-          "optional": true
+          'writable': true,
+          'optional': true
         },
         {
-          "name": "affiliateAccount",
-          "docs": [
-            "Optional affiliate account PDA (auto-initialized if needed)"
+          'name': 'affiliateAccount',
+          'docs': [
+            'Optional affiliate account PDA (auto-initialized if needed)'
           ],
-          "writable": true,
-          "optional": true
+          'writable': true,
+          'optional': true
         },
         {
-          "name": "referrer",
-          "docs": [
-            "Optional referrer wallet (receives 5% if affiliate has referrer)"
+          'name': 'referrer',
+          'docs': [
+            'Optional referrer wallet (receives 5% if affiliate has referrer)'
           ],
-          "writable": true,
-          "optional": true
+          'writable': true,
+          'optional': true
         },
         {
-          "name": "referrerAccount",
-          "docs": [
+          'name': 'referrerAccount',
+          'docs': [
             "Optional referrer's affiliate account PDA (updated with referree stats)"
           ],
-          "writable": true,
-          "optional": true
+          'writable': true,
+          'optional': true
         },
         {
-          "name": "partnerAccount",
-          "docs": [
-            "Optional partner collection account for discount validation",
-            "PDA seeds validated in processor to prevent fake partner accounts"
+          'name': 'partnerAccount',
+          'docs': [
+            'Optional partner collection account for discount validation',
+            'PDA seeds validated in processor to prevent fake partner accounts'
           ],
-          "optional": true
+          'optional': true
         },
         {
-          "name": "nftMetadata",
-          "docs": [
-            "Metaplex metadata account for collection verification"
+          'name': 'nftMetadata',
+          'docs': [
+            'Metaplex metadata account for collection verification'
           ],
-          "optional": true
+          'optional': true
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
+          'name': 'systemProgram',
+          'address': '11111111111111111111111111111111'
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "nftMint",
-          "type": "pubkey"
+          'name': 'nftMint',
+          'type': 'pubkey'
         },
         {
-          "name": "metadataUri",
-          "type": "string"
+          'name': 'metadataUri',
+          'type': 'string'
         },
         {
-          "name": "collectionMint",
-          "type": {
-            "option": "pubkey"
+          'name': 'collectionMint',
+          'type': {
+            'option': 'pubkey'
           }
         }
       ]
     },
     {
-      "name": "initializeConfig",
-      "docs": [
-        "Initialize protocol configuration"
+      'name': 'initializeConfig',
+      'docs': [
+        'Initialize protocol configuration'
       ],
-      "discriminator": [
+      'discriminator': [
         208,
         127,
         21,
@@ -560,15 +560,15 @@ export type Mainframe = {
         196,
         70
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -590,48 +590,48 @@ export type Mainframe = {
           }
         },
         {
-          "name": "authority",
-          "writable": true,
-          "signer": true
+          'name': 'authority',
+          'writable': true,
+          'signer': true
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
+          'name': 'systemProgram',
+          'address': '11111111111111111111111111111111'
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "fees",
-          "type": {
-            "defined": {
-              "name": "feeStructure"
+          'name': 'fees',
+          'type': {
+            'defined': {
+              'name': 'feeStructure'
             }
           }
         },
         {
-          "name": "treasuryParams",
-          "type": {
-            "defined": {
-              "name": "treasuryParams"
+          'name': 'treasuryParams',
+          'type': {
+            'defined': {
+              'name': 'treasuryParams'
             }
           }
         },
         {
-          "name": "configParams",
-          "type": {
-            "defined": {
-              "name": "configParams"
+          'name': 'configParams',
+          'type': {
+            'defined': {
+              'name': 'configParams'
             }
           }
         }
       ]
     },
     {
-      "name": "pause",
-      "docs": [
-        "Pause/unpause protocol"
+      'name': 'pause',
+      'docs': [
+        'Pause/unpause protocol'
       ],
-      "discriminator": [
+      'discriminator': [
         211,
         22,
         221,
@@ -641,15 +641,15 @@ export type Mainframe = {
         193,
         47
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -671,24 +671,24 @@ export type Mainframe = {
           }
         },
         {
-          "name": "authority",
-          "writable": true,
-          "signer": true
+          'name': 'authority',
+          'writable': true,
+          'signer': true
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "paused",
-          "type": "bool"
+          'name': 'paused',
+          'type': 'bool'
         }
       ]
     },
     {
-      "name": "pauseAgent",
-      "docs": [
-        "Pause or resume agent"
+      'name': 'pauseAgent',
+      'docs': [
+        'Pause or resume agent'
       ],
-      "discriminator": [
+      'discriminator': [
         148,
         32,
         1,
@@ -698,15 +698,15 @@ export type Mainframe = {
         178,
         140
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "agentAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'agentAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   97,
                   103,
                   101,
@@ -715,31 +715,31 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "account",
-                "path": "agent_account.nft_mint",
-                "account": "agentAccount"
+                'kind': 'account',
+                'path': 'agent_account.nft_mint',
+                'account': 'agentAccount'
               }
             ]
           }
         },
         {
-          "name": "nftTokenAccount",
-          "docs": [
-            "NFT token account - validates current owner actually owns the NFT"
+          'name': 'nftTokenAccount',
+          'docs': [
+            'NFT token account - validates current owner actually owns the NFT'
           ]
         },
         {
-          "name": "owner",
-          "writable": true,
-          "signer": true
+          'name': 'owner',
+          'writable': true,
+          'signer': true
         },
         {
-          "name": "protocolConfig",
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -761,15 +761,15 @@ export type Mainframe = {
           }
         }
       ],
-      "args": []
+      'args': []
     },
     {
-      "name": "proposeAuthorityTransfer",
-      "docs": [
-        "Propose new protocol authority (step 1 of 2-step transfer)",
-        "Two-step authority transfer prevents accidental lockout"
+      'name': 'proposeAuthorityTransfer',
+      'docs': [
+        'Propose new protocol authority (step 1 of 2-step transfer)',
+        'Two-step authority transfer prevents accidental lockout'
       ],
-      "discriminator": [
+      'discriminator': [
         57,
         206,
         225,
@@ -779,15 +779,15 @@ export type Mainframe = {
         174,
         145
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -809,24 +809,24 @@ export type Mainframe = {
           }
         },
         {
-          "name": "currentAuthority",
-          "writable": true,
-          "signer": true
+          'name': 'currentAuthority',
+          'writable': true,
+          'signer': true
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "newAuthority",
-          "type": "pubkey"
+          'name': 'newAuthority',
+          'type': 'pubkey'
         }
       ]
     },
     {
-      "name": "registerAffiliate",
-      "docs": [
-        "Register as an affiliate"
+      'name': 'registerAffiliate',
+      'docs': [
+        'Register as an affiliate'
       ],
-      "discriminator": [
+      'discriminator': [
         87,
         121,
         99,
@@ -836,15 +836,15 @@ export type Mainframe = {
         103,
         217
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "affiliateAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'affiliateAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   97,
                   102,
                   102,
@@ -857,47 +857,47 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "account",
-                "path": "affiliate"
+                'kind': 'account',
+                'path': 'affiliate'
               }
             ]
           }
         },
         {
-          "name": "affiliate",
-          "docs": [
-            "The affiliate registering"
+          'name': 'affiliate',
+          'docs': [
+            'The affiliate registering'
           ],
-          "writable": true,
-          "signer": true
+          'writable': true,
+          'signer': true
         },
         {
-          "name": "referrer",
-          "docs": [
-            "Optional referrer (who referred this affiliate)"
+          'name': 'referrer',
+          'docs': [
+            'Optional referrer (who referred this affiliate)'
           ],
-          "optional": true
+          'optional': true
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
+          'name': 'systemProgram',
+          'address': '11111111111111111111111111111111'
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "referrer",
-          "type": {
-            "option": "pubkey"
+          'name': 'referrer',
+          'type': {
+            'option': 'pubkey'
           }
         }
       ]
     },
     {
-      "name": "removePartnerCollection",
-      "docs": [
-        "Remove partner collection"
+      'name': 'removePartnerCollection',
+      'docs': [
+        'Remove partner collection'
       ],
-      "discriminator": [
+      'discriminator': [
         159,
         200,
         114,
@@ -907,15 +907,15 @@ export type Mainframe = {
         224,
         236
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "partnerAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'partnerAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   97,
                   114,
@@ -926,20 +926,20 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "arg",
-                "path": "collectionMint"
+                'kind': 'arg',
+                'path': 'collectionMint'
               }
             ]
           }
         },
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -961,24 +961,24 @@ export type Mainframe = {
           }
         },
         {
-          "name": "signer",
-          "writable": true,
-          "signer": true
+          'name': 'signer',
+          'writable': true,
+          'signer': true
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "collection",
-          "type": "pubkey"
+          'name': 'collection',
+          'type': 'pubkey'
         }
       ]
     },
     {
-      "name": "setAffiliateBonus",
-      "docs": [
-        "Set custom affiliate bonus (Authority or Manager)"
+      'name': 'setAffiliateBonus',
+      'docs': [
+        'Set custom affiliate bonus (Authority or Manager)'
       ],
-      "discriminator": [
+      'discriminator': [
         137,
         239,
         68,
@@ -988,15 +988,15 @@ export type Mainframe = {
         154,
         121
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "affiliateAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'affiliateAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   97,
                   102,
                   102,
@@ -1009,20 +1009,20 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "account",
-                "path": "affiliate_account.affiliate",
-                "account": "affiliateAccount"
+                'kind': 'account',
+                'path': 'affiliate_account.affiliate',
+                'account': 'affiliateAccount'
               }
             ]
           }
         },
         {
-          "name": "protocolConfig",
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -1044,24 +1044,24 @@ export type Mainframe = {
           }
         },
         {
-          "name": "signer",
-          "writable": true,
-          "signer": true
+          'name': 'signer',
+          'writable': true,
+          'signer': true
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "bonusBps",
-          "type": "u16"
+          'name': 'bonusBps',
+          'type': 'u16'
         }
       ]
     },
     {
-      "name": "transferAgent",
-      "docs": [
-        "Transfer agent ownership"
+      'name': 'transferAgent',
+      'docs': [
+        'Transfer agent ownership'
       ],
-      "discriminator": [
+      'discriminator': [
         137,
         80,
         56,
@@ -1071,15 +1071,15 @@ export type Mainframe = {
         39,
         192
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "agentAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'agentAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   97,
                   103,
                   101,
@@ -1088,34 +1088,34 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "account",
-                "path": "agent_account.nft_mint",
-                "account": "agentAccount"
+                'kind': 'account',
+                'path': 'agent_account.nft_mint',
+                'account': 'agentAccount'
               }
             ]
           }
         },
         {
-          "name": "newNftTokenAccount",
-          "docs": [
-            "New NFT token account - validates that new_owner actually owns the NFT"
+          'name': 'newNftTokenAccount',
+          'docs': [
+            'New NFT token account - validates that new_owner actually owns the NFT'
           ]
         },
         {
-          "name": "newOwner",
-          "docs": [
-            "New owner pays fee to claim agent control"
+          'name': 'newOwner',
+          'docs': [
+            'New owner pays fee to claim agent control'
           ],
-          "writable": true,
-          "signer": true
+          'writable': true,
+          'signer': true
         },
         {
-          "name": "protocolConfig",
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -1137,33 +1137,33 @@ export type Mainframe = {
           }
         },
         {
-          "name": "protocolTreasury",
-          "docs": [
-            "Fee distribution accounts"
+          'name': 'protocolTreasury',
+          'docs': [
+            'Fee distribution accounts'
           ],
-          "writable": true
+          'writable': true
         },
         {
-          "name": "validatorTreasury",
-          "writable": true
+          'name': 'validatorTreasury',
+          'writable': true
         },
         {
-          "name": "networkTreasury",
-          "writable": true
+          'name': 'networkTreasury',
+          'writable': true
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
+          'name': 'systemProgram',
+          'address': '11111111111111111111111111111111'
         }
       ],
-      "args": []
+      'args': []
     },
     {
-      "name": "updateAgentConfig",
-      "docs": [
-        "Update agent configuration"
+      'name': 'updateAgentConfig',
+      'docs': [
+        'Update agent configuration'
       ],
-      "discriminator": [
+      'discriminator': [
         232,
         239,
         83,
@@ -1173,15 +1173,15 @@ export type Mainframe = {
         84,
         76
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "agentAccount",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'agentAccount',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   97,
                   103,
                   101,
@@ -1190,25 +1190,25 @@ export type Mainframe = {
                 ]
               },
               {
-                "kind": "account",
-                "path": "agent_account.nft_mint",
-                "account": "agentAccount"
+                'kind': 'account',
+                'path': 'agent_account.nft_mint',
+                'account': 'agentAccount'
               }
             ]
           }
         },
         {
-          "name": "owner",
-          "writable": true,
-          "signer": true
+          'name': 'owner',
+          'writable': true,
+          'signer': true
         },
         {
-          "name": "protocolConfig",
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -1230,38 +1230,38 @@ export type Mainframe = {
           }
         },
         {
-          "name": "protocolTreasury",
-          "docs": [
-            "Fee distribution accounts"
+          'name': 'protocolTreasury',
+          'docs': [
+            'Fee distribution accounts'
           ],
-          "writable": true
+          'writable': true
         },
         {
-          "name": "validatorTreasury",
-          "writable": true
+          'name': 'validatorTreasury',
+          'writable': true
         },
         {
-          "name": "networkTreasury",
-          "writable": true
+          'name': 'networkTreasury',
+          'writable': true
         },
         {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
+          'name': 'systemProgram',
+          'address': '11111111111111111111111111111111'
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "newMetadataUri",
-          "type": "string"
+          'name': 'newMetadataUri',
+          'type': 'string'
         }
       ]
     },
     {
-      "name": "updateFees",
-      "docs": [
-        "Update fee structure"
+      'name': 'updateFees',
+      'docs': [
+        'Update fee structure'
       ],
-      "discriminator": [
+      'discriminator': [
         225,
         27,
         13,
@@ -1271,15 +1271,15 @@ export type Mainframe = {
         172,
         191
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -1301,28 +1301,28 @@ export type Mainframe = {
           }
         },
         {
-          "name": "authority",
-          "writable": true,
-          "signer": true
+          'name': 'authority',
+          'writable': true,
+          'signer': true
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "newFees",
-          "type": {
-            "defined": {
-              "name": "feeStructure"
+          'name': 'newFees',
+          'type': {
+            'defined': {
+              'name': 'feeStructure'
             }
           }
         }
       ]
     },
     {
-      "name": "updateProtocolLimits",
-      "docs": [
-        "Update protocol limits"
+      'name': 'updateProtocolLimits',
+      'docs': [
+        'Update protocol limits'
       ],
-      "discriminator": [
+      'discriminator': [
         93,
         218,
         165,
@@ -1332,15 +1332,15 @@ export type Mainframe = {
         119,
         166
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -1362,28 +1362,28 @@ export type Mainframe = {
           }
         },
         {
-          "name": "authority",
-          "writable": true,
-          "signer": true
+          'name': 'authority',
+          'writable': true,
+          'signer': true
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "maxPartnerCollections",
-          "type": "u64"
+          'name': 'maxPartnerCollections',
+          'type': 'u64'
         },
         {
-          "name": "maxAffiliateBps",
-          "type": "u16"
+          'name': 'maxAffiliateBps',
+          'type': 'u16'
         }
       ]
     },
     {
-      "name": "updateTreasuryAddresses",
-      "docs": [
-        "Update treasury addresses"
+      'name': 'updateTreasuryAddresses',
+      'docs': [
+        'Update treasury addresses'
       ],
-      "discriminator": [
+      'discriminator': [
         233,
         146,
         71,
@@ -1393,15 +1393,15 @@ export type Mainframe = {
         247,
         150
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -1423,46 +1423,46 @@ export type Mainframe = {
           }
         },
         {
-          "name": "authority",
-          "docs": [
-            "Protocol authority (must match config)"
+          'name': 'authority',
+          'docs': [
+            'Protocol authority (must match config)'
           ],
-          "signer": true,
-          "relations": [
-            "protocolConfig"
+          'signer': true,
+          'relations': [
+            'protocolConfig'
           ]
         },
         {
-          "name": "newProtocolTreasury"
+          'name': 'newProtocolTreasury'
         },
         {
-          "name": "newValidatorTreasury"
+          'name': 'newValidatorTreasury'
         },
         {
-          "name": "newNetworkTreasury"
+          'name': 'newNetworkTreasury'
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "newProtocolTreasury",
-          "type": "pubkey"
+          'name': 'newProtocolTreasury',
+          'type': 'pubkey'
         },
         {
-          "name": "newValidatorTreasury",
-          "type": "pubkey"
+          'name': 'newValidatorTreasury',
+          'type': 'pubkey'
         },
         {
-          "name": "newNetworkTreasury",
-          "type": "pubkey"
+          'name': 'newNetworkTreasury',
+          'type': 'pubkey'
         }
       ]
     },
     {
-      "name": "updateTreasuryDistribution",
-      "docs": [
-        "Update treasury distribution"
+      'name': 'updateTreasuryDistribution',
+      'docs': [
+        'Update treasury distribution'
       ],
-      "discriminator": [
+      'discriminator': [
         155,
         122,
         211,
@@ -1472,15 +1472,15 @@ export type Mainframe = {
         194,
         166
       ],
-      "accounts": [
+      'accounts': [
         {
-          "name": "protocolConfig",
-          "writable": true,
-          "pda": {
-            "seeds": [
+          'name': 'protocolConfig',
+          'writable': true,
+          'pda': {
+            'seeds': [
               {
-                "kind": "const",
-                "value": [
+                'kind': 'const',
+                'value': [
                   112,
                   114,
                   111,
@@ -1502,31 +1502,31 @@ export type Mainframe = {
           }
         },
         {
-          "name": "authority",
-          "writable": true,
-          "signer": true
+          'name': 'authority',
+          'writable': true,
+          'signer': true
         }
       ],
-      "args": [
+      'args': [
         {
-          "name": "protocolTreasuryBps",
-          "type": "u16"
+          'name': 'protocolTreasuryBps',
+          'type': 'u16'
         },
         {
-          "name": "validatorTreasuryBps",
-          "type": "u16"
+          'name': 'validatorTreasuryBps',
+          'type': 'u16'
         },
         {
-          "name": "networkTreasuryBps",
-          "type": "u16"
+          'name': 'networkTreasuryBps',
+          'type': 'u16'
         }
       ]
     }
   ],
-  "accounts": [
+  'accounts': [
     {
-      "name": "affiliateAccount",
-      "discriminator": [
+      'name': 'affiliateAccount',
+      'discriminator': [
         189,
         94,
         244,
@@ -1538,8 +1538,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "agentAccount",
-      "discriminator": [
+      'name': 'agentAccount',
+      'discriminator': [
         241,
         119,
         69,
@@ -1551,8 +1551,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "partnerCollectionAccount",
-      "discriminator": [
+      'name': 'partnerCollectionAccount',
+      'discriminator': [
         239,
         239,
         19,
@@ -1564,8 +1564,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "protocolConfig",
-      "discriminator": [
+      'name': 'protocolConfig',
+      'discriminator': [
         207,
         91,
         250,
@@ -1577,10 +1577,10 @@ export type Mainframe = {
       ]
     }
   ],
-  "events": [
+  'events': [
     {
-      "name": "affiliateBonusSet",
-      "discriminator": [
+      'name': 'affiliateBonusSet',
+      'discriminator': [
         23,
         255,
         195,
@@ -1592,8 +1592,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "affiliatePaid",
-      "discriminator": [
+      'name': 'affiliatePaid',
+      'discriminator': [
         23,
         62,
         238,
@@ -1605,8 +1605,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "affiliateRegistered",
-      "discriminator": [
+      'name': 'affiliateRegistered',
+      'discriminator': [
         105,
         5,
         31,
@@ -1618,8 +1618,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "agentAccountClosed",
-      "discriminator": [
+      'name': 'agentAccountClosed',
+      'discriminator': [
         16,
         48,
         148,
@@ -1631,8 +1631,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "agentClosed",
-      "discriminator": [
+      'name': 'agentClosed',
+      'discriminator': [
         72,
         133,
         207,
@@ -1644,8 +1644,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "agentCreated",
-      "discriminator": [
+      'name': 'agentCreated',
+      'discriminator': [
         237,
         44,
         61,
@@ -1657,8 +1657,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "agentPaused",
-      "discriminator": [
+      'name': 'agentPaused',
+      'discriminator': [
         228,
         35,
         167,
@@ -1670,8 +1670,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "agentResumed",
-      "discriminator": [
+      'name': 'agentResumed',
+      'discriminator': [
         138,
         191,
         50,
@@ -1683,8 +1683,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "agentTransferred",
-      "discriminator": [
+      'name': 'agentTransferred',
+      'discriminator': [
         5,
         213,
         4,
@@ -1696,8 +1696,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "agentUpdated",
-      "discriminator": [
+      'name': 'agentUpdated',
+      'discriminator': [
         210,
         179,
         162,
@@ -1709,8 +1709,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "tierUpgraded",
-      "discriminator": [
+      'name': 'tierUpgraded',
+      'discriminator': [
         141,
         12,
         195,
@@ -1722,8 +1722,8 @@ export type Mainframe = {
       ]
     },
     {
-      "name": "treasuryAddressesUpdated",
-      "discriminator": [
+      'name': 'treasuryAddressesUpdated',
+      'discriminator': [
         73,
         89,
         76,
@@ -1735,398 +1735,398 @@ export type Mainframe = {
       ]
     }
   ],
-  "errors": [
+  'errors': [
     {
-      "code": 12000,
-      "name": "nftNotOwned",
-      "msg": "NFT not owned by the signer"
+      'code': 12000,
+      'name': 'nftNotOwned',
+      'msg': 'NFT not owned by the signer'
     },
     {
-      "code": 12001,
-      "name": "metadataTooLarge",
-      "msg": "Agent metadata exceeds maximum size"
+      'code': 12001,
+      'name': 'metadataTooLarge',
+      'msg': 'Agent metadata exceeds maximum size'
     },
     {
-      "code": 12002,
-      "name": "agentNotActive",
-      "msg": "Agent is not active"
+      'code': 12002,
+      'name': 'agentNotActive',
+      'msg': 'Agent is not active'
     },
     {
-      "code": 12003,
-      "name": "insufficientFee",
-      "msg": "Insufficient fee payment"
+      'code': 12003,
+      'name': 'insufficientFee',
+      'msg': 'Insufficient fee payment'
     },
     {
-      "code": 12004,
-      "name": "protocolPaused",
-      "msg": "Protocol is paused"
+      'code': 12004,
+      'name': 'protocolPaused',
+      'msg': 'Protocol is paused'
     },
     {
-      "code": 12005,
-      "name": "unauthorized",
-      "msg": "Unauthorized operation"
+      'code': 12005,
+      'name': 'unauthorized',
+      'msg': 'Unauthorized operation'
     },
     {
-      "code": 12006,
-      "name": "agentAlreadyExists",
-      "msg": "Agent already exists for this NFT"
+      'code': 12006,
+      'name': 'agentAlreadyExists',
+      'msg': 'Agent already exists for this NFT'
     },
     {
-      "code": 12007,
-      "name": "invalidNftMetadata",
-      "msg": "Invalid NFT metadata"
+      'code': 12007,
+      'name': 'invalidNftMetadata',
+      'msg': 'Invalid NFT metadata'
     },
     {
-      "code": 12008,
-      "name": "versionOverflow",
-      "msg": "Version counter overflow"
+      'code': 12008,
+      'name': 'versionOverflow',
+      'msg': 'Version counter overflow'
     },
     {
-      "code": 12009,
-      "name": "counterOverflow",
-      "msg": "Total agents counter overflow"
+      'code': 12009,
+      'name': 'counterOverflow',
+      'msg': 'Total agents counter overflow'
     },
     {
-      "code": 12010,
-      "name": "collectionAlreadyExists",
-      "msg": "Collection already exists in partner list"
+      'code': 12010,
+      'name': 'collectionAlreadyExists',
+      'msg': 'Collection already exists in partner list'
     },
     {
-      "code": 12011,
-      "name": "collectionNotFound",
-      "msg": "Collection not found in partner list"
+      'code': 12011,
+      'name': 'collectionNotFound',
+      'msg': 'Collection not found in partner list'
     },
     {
-      "code": 12012,
-      "name": "agentAlreadyClosed",
-      "msg": "Agent is already closed"
+      'code': 12012,
+      'name': 'agentAlreadyClosed',
+      'msg': 'Agent is already closed'
     },
     {
-      "code": 12013,
-      "name": "invalidMetadataUri",
-      "msg": "Invalid or empty metadata URI"
+      'code': 12013,
+      'name': 'invalidMetadataUri',
+      'msg': 'Invalid or empty metadata URI'
     },
     {
-      "code": 12014,
-      "name": "invalidDiscountPercent",
-      "msg": "Invalid discount percentage (must be 0-100)"
+      'code': 12014,
+      'name': 'invalidDiscountPercent',
+      'msg': 'Invalid discount percentage (must be 0-100)'
     },
     {
-      "code": 12015,
-      "name": "invalidTreasuryDistribution",
-      "msg": "Treasury distribution basis points must sum to 10,000 (100%)"
+      'code': 12015,
+      'name': 'invalidTreasuryDistribution',
+      'msg': 'Treasury distribution basis points must sum to 10,000 (100%)'
     },
     {
-      "code": 12016,
-      "name": "unauthorizedCpi",
-      "msg": "Cross-program invocation unauthorized"
+      'code': 12016,
+      'name': 'unauthorizedCpi',
+      'msg': 'Cross-program invocation unauthorized'
     },
     {
-      "code": 12017,
-      "name": "invalidUriFormat",
-      "msg": "Metadata URI format invalid or exceeds length limit"
+      'code': 12017,
+      'name': 'invalidUriFormat',
+      'msg': 'Metadata URI format invalid or exceeds length limit'
     },
     {
-      "code": 12018,
-      "name": "partnerCollectionLimitExceeded",
-      "msg": "Partner collection limit exceeded"
+      'code': 12018,
+      'name': 'partnerCollectionLimitExceeded',
+      'msg': 'Partner collection limit exceeded'
     },
     {
-      "code": 12019,
-      "name": "invalidAccountRelationship",
-      "msg": "Account relationship validation failed"
+      'code': 12019,
+      'name': 'invalidAccountRelationship',
+      'msg': 'Account relationship validation failed'
     },
     {
-      "code": 12020,
-      "name": "agentNotClosed",
-      "msg": "Agent is not closed - cannot recover rent"
+      'code': 12020,
+      'name': 'agentNotClosed',
+      'msg': 'Agent is not closed - cannot recover rent'
     },
     {
-      "code": 12021,
-      "name": "insufficientBalance",
-      "msg": "Insufficient balance for fee payment"
+      'code': 12021,
+      'name': 'insufficientBalance',
+      'msg': 'Insufficient balance for fee payment'
     },
     {
-      "code": 12022,
-      "name": "invalidAffiliate",
-      "msg": "Invalid affiliate percentage (must be 0-5000 bps, max 50%)"
+      'code': 12022,
+      'name': 'invalidAffiliate',
+      'msg': 'Invalid affiliate percentage (must be 0-5000 bps, max 50%)'
     },
     {
-      "code": 12023,
-      "name": "affiliateNotFound",
-      "msg": "Affiliate account not found"
+      'code': 12023,
+      'name': 'affiliateNotFound',
+      'msg': 'Affiliate account not found'
     },
     {
-      "code": 12024,
-      "name": "unauthorizedManager",
-      "msg": "Unauthorized manager operation"
+      'code': 12024,
+      'name': 'unauthorizedManager',
+      'msg': 'Unauthorized manager operation'
     },
     {
-      "code": 12025,
-      "name": "circularReferral",
-      "msg": "Referral would create circular reference"
+      'code': 12025,
+      'name': 'circularReferral',
+      'msg': 'Referral would create circular reference'
     },
     {
-      "code": 12026,
-      "name": "maxReferralDepthExceeded",
-      "msg": "Maximum referral depth exceeded"
+      'code': 12026,
+      'name': 'maxReferralDepthExceeded',
+      'msg': 'Maximum referral depth exceeded'
     },
     {
-      "code": 12027,
-      "name": "alreadyOwner",
-      "msg": "Agent is already owned by the new owner"
+      'code': 12027,
+      'name': 'alreadyOwner',
+      'msg': 'Agent is already owned by the new owner'
     },
     {
-      "code": 12028,
-      "name": "invalidNft",
-      "msg": "NFT mint does not match agent account"
+      'code': 12028,
+      'name': 'invalidNft',
+      'msg': 'NFT mint does not match agent account'
     },
     {
-      "code": 12029,
-      "name": "invalidTreasuryAddress",
-      "msg": "Invalid treasury address - cannot be system program, protocol config, or program ID"
+      'code': 12029,
+      'name': 'invalidTreasuryAddress',
+      'msg': 'Invalid treasury address - cannot be system program, protocol config, or program ID'
     },
     {
-      "code": 12030,
-      "name": "treasuriesMustBeDifferent",
-      "msg": "All three treasuries must be different addresses"
+      'code': 12030,
+      'name': 'treasuriesMustBeDifferent',
+      'msg': 'All three treasuries must be different addresses'
     },
     {
-      "code": 12031,
-      "name": "treasuryAccountMismatch",
-      "msg": "Treasury account mismatch - provided account doesn't match pubkey"
+      'code': 12031,
+      'name': 'treasuryAccountMismatch',
+      'msg': "Treasury account mismatch - provided account doesn't match pubkey"
     }
   ],
-  "types": [
+  'types': [
     {
-      "name": "affiliateAccount",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'affiliateAccount',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "affiliate",
-            "docs": [
+            'name': 'affiliate',
+            'docs': [
               "The affiliate's wallet address"
             ],
-            "type": "pubkey"
+            'type': 'pubkey'
           },
           {
-            "name": "totalSales",
-            "docs": [
-              "Total number of agent sales"
+            'name': 'totalSales',
+            'docs': [
+              'Total number of agent sales'
             ],
-            "type": "u64"
+            'type': 'u64'
           },
           {
-            "name": "totalRevenue",
-            "docs": [
-              "Total revenue earned (lamports)"
+            'name': 'totalRevenue',
+            'docs': [
+              'Total revenue earned (lamports)'
             ],
-            "type": "u64"
+            'type': 'u64'
           },
           {
-            "name": "referralCount",
-            "docs": [
-              "Number of direct referrals (Level 1)"
+            'name': 'referralCount',
+            'docs': [
+              'Number of direct referrals (Level 1)'
             ],
-            "type": "u64"
+            'type': 'u64'
           },
           {
-            "name": "referreeSales",
-            "docs": [
-              "Total sales made by referrals"
+            'name': 'referreeSales',
+            'docs': [
+              'Total sales made by referrals'
             ],
-            "type": "u64"
+            'type': 'u64'
           },
           {
-            "name": "referreeRevenue",
-            "docs": [
-              "Total revenue earned from referral commissions"
+            'name': 'referreeRevenue',
+            'docs': [
+              'Total revenue earned from referral commissions'
             ],
-            "type": "u64"
+            'type': 'u64'
           },
           {
-            "name": "referrer",
-            "docs": [
-              "Who referred this affiliate (single-level referrals only)"
+            'name': 'referrer',
+            'docs': [
+              'Who referred this affiliate (single-level referrals only)'
             ],
-            "type": {
-              "option": "pubkey"
+            'type': {
+              'option': 'pubkey'
             }
           },
           {
-            "name": "createdAt",
-            "docs": [
-              "Account creation timestamp"
+            'name': 'createdAt',
+            'docs': [
+              'Account creation timestamp'
             ],
-            "type": "i64"
+            'type': 'i64'
           },
           {
-            "name": "bonusBps",
-            "docs": [
-              "Custom bonus rate in basis points (set by authority or manager for special deals)"
+            'name': 'bonusBps',
+            'docs': [
+              'Custom bonus rate in basis points (set by authority or manager for special deals)'
             ],
-            "type": "u16"
+            'type': 'u16'
           },
           {
-            "name": "bump",
-            "docs": [
-              "Bump seed for PDA"
+            'name': 'bump',
+            'docs': [
+              'Bump seed for PDA'
             ],
-            "type": "u8"
+            'type': 'u8'
           }
         ]
       }
     },
     {
-      "name": "affiliateBonusSet",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'affiliateBonusSet',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "affiliate",
-            "type": "pubkey"
+            'name': 'affiliate',
+            'type': 'pubkey'
           },
           {
-            "name": "bonusBps",
-            "type": "u16"
+            'name': 'bonusBps',
+            'type': 'u16'
           },
           {
-            "name": "setBy",
-            "type": "pubkey"
+            'name': 'setBy',
+            'type': 'pubkey'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "affiliatePaid",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'affiliatePaid',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "agentAccount",
-            "type": "pubkey"
+            'name': 'agentAccount',
+            'type': 'pubkey'
           },
           {
-            "name": "seller",
-            "type": "pubkey"
+            'name': 'seller',
+            'type': 'pubkey'
           },
           {
-            "name": "affiliateAmount",
-            "type": "u64"
+            'name': 'affiliateAmount',
+            'type': 'u64'
           },
           {
-            "name": "affiliateBps",
-            "type": "u16"
+            'name': 'affiliateBps',
+            'type': 'u16'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "affiliateRegistered",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'affiliateRegistered',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "affiliate",
-            "type": "pubkey"
+            'name': 'affiliate',
+            'type': 'pubkey'
           },
           {
-            "name": "referrer",
-            "type": {
-              "option": "pubkey"
+            'name': 'referrer',
+            'type': {
+              'option': 'pubkey'
             }
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "agentAccount",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'agentAccount',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "nftMint",
-            "docs": [
-              "The NFT mint associated with this agent"
+            'name': 'nftMint',
+            'docs': [
+              'The NFT mint associated with this agent'
             ],
-            "type": "pubkey"
+            'type': 'pubkey'
           },
           {
-            "name": "owner",
-            "docs": [
-              "The owner of the NFT and agent"
+            'name': 'owner',
+            'docs': [
+              'The owner of the NFT and agent'
             ],
-            "type": "pubkey"
+            'type': 'pubkey'
           },
           {
-            "name": "collectionMint",
-            "docs": [
-              "The collection this NFT belongs to"
+            'name': 'collectionMint',
+            'docs': [
+              'The collection this NFT belongs to'
             ],
-            "type": {
-              "option": "pubkey"
+            'type': {
+              'option': 'pubkey'
             }
           },
           {
-            "name": "metadataUri",
-            "docs": [
-              "URI pointing to secure JSON metadata"
+            'name': 'metadataUri',
+            'docs': [
+              'URI pointing to secure JSON metadata'
             ],
-            "type": "string"
+            'type': 'string'
           },
           {
-            "name": "status",
-            "docs": [
-              "Agent operational status"
+            'name': 'status',
+            'docs': [
+              'Agent operational status'
             ],
-            "type": {
-              "defined": {
-                "name": "agentStatus"
+            'type': {
+              'defined': {
+                'name': 'agentStatus'
               }
             }
           },
           {
-            "name": "activatedAt",
-            "docs": [
-              "Timestamp of activation"
+            'name': 'activatedAt',
+            'docs': [
+              'Timestamp of activation'
             ],
-            "type": "i64"
+            'type': 'i64'
           },
           {
-            "name": "updatedAt",
-            "docs": [
-              "Last update timestamp"
+            'name': 'updatedAt',
+            'docs': [
+              'Last update timestamp'
             ],
-            "type": "i64"
+            'type': 'i64'
           },
           {
-            "name": "version",
-            "docs": [
-              "Version for configuration updates"
+            'name': 'version',
+            'docs': [
+              'Version for configuration updates'
             ],
-            "type": "u64"
+            'type': 'u64'
           },
           {
-            "name": "reserved",
-            "docs": [
-              "Reserved space for future upgrades"
+            'name': 'reserved',
+            'docs': [
+              'Reserved space for future upgrades'
             ],
-            "type": {
-              "array": [
-                "u8",
+            'type': {
+              'array': [
+                'u8',
                 32
               ]
             }
@@ -2135,413 +2135,413 @@ export type Mainframe = {
       }
     },
     {
-      "name": "agentAccountClosed",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'agentAccountClosed',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "agentAccount",
-            "type": "pubkey"
+            'name': 'agentAccount',
+            'type': 'pubkey'
           },
           {
-            "name": "rentRecovered",
-            "type": "u64"
+            'name': 'rentRecovered',
+            'type': 'u64'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "agentClosed",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'agentClosed',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "agentAccount",
-            "type": "pubkey"
+            'name': 'agentAccount',
+            'type': 'pubkey'
           },
           {
-            "name": "owner",
-            "type": "pubkey"
+            'name': 'owner',
+            'type': 'pubkey'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "agentCreated",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'agentCreated',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "agentAccount",
-            "type": "pubkey"
+            'name': 'agentAccount',
+            'type': 'pubkey'
           },
           {
-            "name": "nftMint",
-            "type": "pubkey"
+            'name': 'nftMint',
+            'type': 'pubkey'
           },
           {
-            "name": "owner",
-            "type": "pubkey"
+            'name': 'owner',
+            'type': 'pubkey'
           },
           {
-            "name": "collectionMint",
-            "type": {
-              "option": "pubkey"
+            'name': 'collectionMint',
+            'type': {
+              'option': 'pubkey'
             }
           },
           {
-            "name": "metadataUri",
-            "type": "string"
+            'name': 'metadataUri',
+            'type': 'string'
           },
           {
-            "name": "seller",
-            "type": {
-              "option": "pubkey"
+            'name': 'seller',
+            'type': {
+              'option': 'pubkey'
             }
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           },
           {
-            "name": "version",
-            "type": "u64"
+            'name': 'version',
+            'type': 'u64'
           }
         ]
       }
     },
     {
-      "name": "agentPaused",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'agentPaused',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "agentAccount",
-            "type": "pubkey"
+            'name': 'agentAccount',
+            'type': 'pubkey'
           },
           {
-            "name": "owner",
-            "type": "pubkey"
+            'name': 'owner',
+            'type': 'pubkey'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "agentResumed",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'agentResumed',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "agentAccount",
-            "type": "pubkey"
+            'name': 'agentAccount',
+            'type': 'pubkey'
           },
           {
-            "name": "owner",
-            "type": "pubkey"
+            'name': 'owner',
+            'type': 'pubkey'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "agentStatus",
-      "type": {
-        "kind": "enum",
-        "variants": [
+      'name': 'agentStatus',
+      'type': {
+        'kind': 'enum',
+        'variants': [
           {
-            "name": "active"
+            'name': 'active'
           },
           {
-            "name": "paused"
+            'name': 'paused'
           },
           {
-            "name": "closed"
+            'name': 'closed'
           }
         ]
       }
     },
     {
-      "name": "agentTransferred",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'agentTransferred',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "agentAccount",
-            "type": "pubkey"
+            'name': 'agentAccount',
+            'type': 'pubkey'
           },
           {
-            "name": "nftMint",
-            "type": "pubkey"
+            'name': 'nftMint',
+            'type': 'pubkey'
           },
           {
-            "name": "oldOwner",
-            "type": "pubkey"
+            'name': 'oldOwner',
+            'type': 'pubkey'
           },
           {
-            "name": "newOwner",
-            "type": "pubkey"
+            'name': 'newOwner',
+            'type': 'pubkey'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "agentUpdated",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'agentUpdated',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "agentAccount",
-            "type": "pubkey"
+            'name': 'agentAccount',
+            'type': 'pubkey'
           },
           {
-            "name": "owner",
-            "type": "pubkey"
+            'name': 'owner',
+            'type': 'pubkey'
           },
           {
-            "name": "metadataUri",
-            "type": "string"
+            'name': 'metadataUri',
+            'type': 'string'
           },
           {
-            "name": "oldVersion",
-            "type": "u64"
+            'name': 'oldVersion',
+            'type': 'u64'
           },
           {
-            "name": "newVersion",
-            "type": "u64"
+            'name': 'newVersion',
+            'type': 'u64'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "configParams",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'configParams',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "genesisCollectionMint",
-            "type": "pubkey"
+            'name': 'genesisCollectionMint',
+            'type': 'pubkey'
           },
           {
-            "name": "maxPartnerCollections",
-            "type": "u64"
+            'name': 'maxPartnerCollections',
+            'type': 'u64'
           },
           {
-            "name": "maxAffiliateBps",
-            "type": "u16"
+            'name': 'maxAffiliateBps',
+            'type': 'u16'
           },
           {
-            "name": "manager",
-            "type": "pubkey"
+            'name': 'manager',
+            'type': 'pubkey'
           }
         ]
       }
     },
     {
-      "name": "feeStructure",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'feeStructure',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "createAgent",
-            "type": "u64"
+            'name': 'createAgent',
+            'type': 'u64'
           },
           {
-            "name": "updateAgentConfig",
-            "type": "u64"
+            'name': 'updateAgentConfig',
+            'type': 'u64'
           },
           {
-            "name": "transferAgent",
-            "type": "u64"
+            'name': 'transferAgent',
+            'type': 'u64'
           },
           {
-            "name": "pauseAgent",
-            "type": "u64"
+            'name': 'pauseAgent',
+            'type': 'u64'
           },
           {
-            "name": "closeAgent",
-            "type": "u64"
+            'name': 'closeAgent',
+            'type': 'u64'
           },
           {
-            "name": "executeAction",
-            "type": "u64"
+            'name': 'executeAction',
+            'type': 'u64'
           }
         ]
       }
     },
     {
-      "name": "partnerCollectionAccount",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'partnerCollectionAccount',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "collectionMint",
-            "type": "pubkey"
+            'name': 'collectionMint',
+            'type': 'pubkey'
           },
           {
-            "name": "discountPercent",
-            "type": "u8"
+            'name': 'discountPercent',
+            'type': 'u8'
           },
           {
-            "name": "name",
-            "type": "string"
+            'name': 'name',
+            'type': 'string'
           },
           {
-            "name": "active",
-            "type": "bool"
+            'name': 'active',
+            'type': 'bool'
           },
           {
-            "name": "addedAt",
-            "type": "i64"
+            'name': 'addedAt',
+            'type': 'i64'
           },
           {
-            "name": "bump",
-            "type": "u8"
+            'name': 'bump',
+            'type': 'u8'
           }
         ]
       }
     },
     {
-      "name": "protocolConfig",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'protocolConfig',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "authority",
-            "docs": [
-              "Protocol authority"
+            'name': 'authority',
+            'docs': [
+              'Protocol authority'
             ],
-            "type": "pubkey"
+            'type': 'pubkey'
           },
           {
-            "name": "manager",
-            "docs": [
-              "Manager authority (can manage flash bonuses and operational tasks)"
+            'name': 'manager',
+            'docs': [
+              'Manager authority (can manage flash bonuses and operational tasks)'
             ],
-            "type": "pubkey"
+            'type': 'pubkey'
           },
           {
-            "name": "genesisCollectionMint",
-            "docs": [
-              "Genesis collection mint (zero fees for this collection)"
+            'name': 'genesisCollectionMint',
+            'docs': [
+              'Genesis collection mint (zero fees for this collection)'
             ],
-            "type": "pubkey"
+            'type': 'pubkey'
           },
           {
-            "name": "fees",
-            "docs": [
-              "Fee structure"
+            'name': 'fees',
+            'docs': [
+              'Fee structure'
             ],
-            "type": {
-              "defined": {
-                "name": "feeStructure"
+            'type': {
+              'defined': {
+                'name': 'feeStructure'
               }
             }
           },
           {
-            "name": "protocolTreasury",
-            "docs": [
-              "Fee distribution accounts"
+            'name': 'protocolTreasury',
+            'docs': [
+              'Fee distribution accounts'
             ],
-            "type": "pubkey"
+            'type': 'pubkey'
           },
           {
-            "name": "validatorTreasury",
-            "type": "pubkey"
+            'name': 'validatorTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "networkTreasury",
-            "type": "pubkey"
+            'name': 'networkTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "protocolTreasuryBps",
-            "docs": [
-              "Fee distribution in basis points (must sum to 10000)"
+            'name': 'protocolTreasuryBps',
+            'docs': [
+              'Fee distribution in basis points (must sum to 10000)'
             ],
-            "type": "u16"
+            'type': 'u16'
           },
           {
-            "name": "validatorTreasuryBps",
-            "type": "u16"
+            'name': 'validatorTreasuryBps',
+            'type': 'u16'
           },
           {
-            "name": "networkTreasuryBps",
-            "type": "u16"
+            'name': 'networkTreasuryBps',
+            'type': 'u16'
           },
           {
-            "name": "paused",
-            "docs": [
-              "Emergency pause status"
+            'name': 'paused',
+            'docs': [
+              'Emergency pause status'
             ],
-            "type": "bool"
+            'type': 'bool'
           },
           {
-            "name": "totalAgents",
-            "docs": [
-              "Total agents activated"
+            'name': 'totalAgents',
+            'docs': [
+              'Total agents activated'
             ],
-            "type": "u64"
+            'type': 'u64'
           },
           {
-            "name": "totalPartners",
-            "docs": [
-              "Total partner collections (stored in separate PDAs)"
+            'name': 'totalPartners',
+            'docs': [
+              'Total partner collections (stored in separate PDAs)'
             ],
-            "type": "u64"
+            'type': 'u64'
           },
           {
-            "name": "maxPartnerCollections",
-            "docs": [
-              "Maximum number of partner collections allowed"
+            'name': 'maxPartnerCollections',
+            'docs': [
+              'Maximum number of partner collections allowed'
             ],
-            "type": "u64"
+            'type': 'u64'
           },
           {
-            "name": "maxAffiliateBps",
-            "docs": [
-              "Maximum affiliate commission in basis points (default: 5000 = 50%)"
+            'name': 'maxAffiliateBps',
+            'docs': [
+              'Maximum affiliate commission in basis points (default: 5000 = 50%)'
             ],
-            "type": "u16"
+            'type': 'u16'
           },
           {
-            "name": "pendingAuthority",
-            "docs": [
-              "Pending authority for two-step transfer"
+            'name': 'pendingAuthority',
+            'docs': [
+              'Pending authority for two-step transfer'
             ],
-            "type": {
-              "option": "pubkey"
+            'type': {
+              'option': 'pubkey'
             }
           },
           {
-            "name": "reserved",
-            "docs": [
-              "Reserved space for future upgrades"
+            'name': 'reserved',
+            'docs': [
+              'Reserved space for future upgrades'
             ],
-            "type": {
-              "array": [
-                "u8",
+            'type': {
+              'array': [
+                'u8',
                 20
               ]
             }
@@ -2550,101 +2550,101 @@ export type Mainframe = {
       }
     },
     {
-      "name": "tierUpgraded",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'tierUpgraded',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "affiliate",
-            "type": "pubkey"
+            'name': 'affiliate',
+            'type': 'pubkey'
           },
           {
-            "name": "oldTier",
-            "type": "u8"
+            'name': 'oldTier',
+            'type': 'u8'
           },
           {
-            "name": "newTier",
-            "type": "u8"
+            'name': 'newTier',
+            'type': 'u8'
           },
           {
-            "name": "totalSales",
-            "type": "u64"
+            'name': 'totalSales',
+            'type': 'u64'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "treasuryAddressesUpdated",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'treasuryAddressesUpdated',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "authority",
-            "type": "pubkey"
+            'name': 'authority',
+            'type': 'pubkey'
           },
           {
-            "name": "oldProtocolTreasury",
-            "type": "pubkey"
+            'name': 'oldProtocolTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "oldValidatorTreasury",
-            "type": "pubkey"
+            'name': 'oldValidatorTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "oldNetworkTreasury",
-            "type": "pubkey"
+            'name': 'oldNetworkTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "newProtocolTreasury",
-            "type": "pubkey"
+            'name': 'newProtocolTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "newValidatorTreasury",
-            "type": "pubkey"
+            'name': 'newValidatorTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "newNetworkTreasury",
-            "type": "pubkey"
+            'name': 'newNetworkTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "timestamp",
-            "type": "i64"
+            'name': 'timestamp',
+            'type': 'i64'
           }
         ]
       }
     },
     {
-      "name": "treasuryParams",
-      "type": {
-        "kind": "struct",
-        "fields": [
+      'name': 'treasuryParams',
+      'type': {
+        'kind': 'struct',
+        'fields': [
           {
-            "name": "protocolTreasury",
-            "type": "pubkey"
+            'name': 'protocolTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "validatorTreasury",
-            "type": "pubkey"
+            'name': 'validatorTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "networkTreasury",
-            "type": "pubkey"
+            'name': 'networkTreasury',
+            'type': 'pubkey'
           },
           {
-            "name": "protocolTreasuryBps",
-            "type": "u16"
+            'name': 'protocolTreasuryBps',
+            'type': 'u16'
           },
           {
-            "name": "validatorTreasuryBps",
-            "type": "u16"
+            'name': 'validatorTreasuryBps',
+            'type': 'u16'
           },
           {
-            "name": "networkTreasuryBps",
-            "type": "u16"
+            'name': 'networkTreasuryBps',
+            'type': 'u16'
           }
         ]
       }

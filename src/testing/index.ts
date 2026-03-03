@@ -234,7 +234,7 @@ export class TestFixtures {
           }
         }
       ],
-      framework: 'elizaOS',
+      framework: 'FrameClaw',
       plugins: [
         {
           id: 'jupiter-swap',

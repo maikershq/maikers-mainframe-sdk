@@ -39,7 +39,7 @@ async function basicExample() {
           minLiquidity: 10000
         }
       }],
-      framework: 'elizaOS',
+      framework: 'FrameClaw',
       plugins: [{
         id: 'jupiter-swap',
         version: '1.0.0',

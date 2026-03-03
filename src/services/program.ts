@@ -413,27 +413,23 @@ export class ProgramService {
 
       const agentAccountPubkey = new PublicKey(agentAccount);
       
-      try {
-        const accountData = await this.program.account.agentAccount.fetch(agentAccountPubkey);
-        
-        const data: AgentAccountData = {
-          nftMint: accountData.nftMint.toBase58(),
-          owner: accountData.owner.toBase58(),
-          metadataUri: accountData.metadataUri,
-          status: this.convertAgentStatus(accountData.status),
-          activatedAt: accountData.activatedAt.toNumber(),
-          updatedAt: accountData.updatedAt.toNumber(),
-          version: accountData.version.toNumber()
-        };
-        
-        if (accountData.collectionMint) {
-          data.collectionMint = accountData.collectionMint.toBase58();
-        }
-        
-        return data;
-      } catch (fetchError: any) {
-        throw fetchError;
+      const accountData = await this.program.account.agentAccount.fetch(agentAccountPubkey);
+      
+      const data: AgentAccountData = {
+        nftMint: accountData.nftMint.toBase58(),
+        owner: accountData.owner.toBase58(),
+        metadataUri: accountData.metadataUri,
+        status: this.convertAgentStatus(accountData.status),
+        activatedAt: accountData.activatedAt.toNumber(),
+        updatedAt: accountData.updatedAt.toNumber(),
+        version: accountData.version.toNumber()
+      };
+      
+      if (accountData.collectionMint) {
+        data.collectionMint = accountData.collectionMint.toBase58();
       }
+      
+      return data;
       
     } catch (error) {
       if (MainframeSDKError.isMainframeError(error)) {

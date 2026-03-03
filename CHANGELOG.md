@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated all documentation to reflect mainframe v1.0.0 program specifications
 - Synced IDL and types from latest mainframe program build
 - Corrected fee structure documentation (0.05 SOL create, 0.005 SOL update, 0.01 SOL transfer)
-- Added elizaOS framework references throughout documentation
+- Added FrameClaw framework references throughout documentation
 - Clarified one-sided transfer operation (new owner only, no previous owner signature required)
 
 **Storage & Configuration:**

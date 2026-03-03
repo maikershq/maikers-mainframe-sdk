@@ -546,7 +546,7 @@ export const QuickStartIntegrations = {
  *     plugins: ['jupiter-swap'],
  *     config: { maxSlippage: 0.5 }
  *   }],
- *   framework: 'elizaOS',
+ *   framework: 'FrameClaw',
  *   plugins: [],
  *   runtime: {
  *     memory: { type: 'redis' },

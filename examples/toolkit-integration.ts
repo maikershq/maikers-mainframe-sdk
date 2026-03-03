@@ -57,7 +57,7 @@ async function anzaKitIntegration() {
         plugins: ['anza-optimized-swap'],
         config: { useAdvancedRouting: true }
       }],
-      framework: 'elizaOS',
+      framework: 'FrameClaw',
       plugins: [],
       runtime: {
         memory: { type: 'memory' },
@@ -126,7 +126,7 @@ async function gillSDKIntegration() {
           purpose: 'Batch operation demo',
           personality: { traits: ['efficient'], style: 'technical' as const },
           capabilities: [{ type: 'defi' as const, plugins: ['swap'], config: {} }],
-          framework: 'elizaOS' as const,
+          framework: 'FrameClaw' as const,
           plugins: [],
           runtime: {
             memory: { type: 'memory' as const },
@@ -146,7 +146,7 @@ async function gillSDKIntegration() {
           purpose: 'Batch operation demo',
           personality: { traits: ['reliable'], style: 'professional' as const },
           capabilities: [{ type: 'analytics' as const, plugins: ['monitor'], config: {} }],
-          framework: 'elizaOS' as const,
+          framework: 'FrameClaw' as const,
           plugins: [],
           runtime: {
             memory: { type: 'memory' as const },

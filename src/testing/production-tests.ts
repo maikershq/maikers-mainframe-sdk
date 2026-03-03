@@ -326,7 +326,7 @@ export class ProductionTestSuite {
         purpose: 'Testing',
         personality: { traits: ['test'], style: 'professional' },
         capabilities: [{ type: 'defi', plugins: ['test'], config: {} }],
-        framework: 'elizaOS',
+        framework: 'FrameClaw',
         plugins: [],
         runtime: { 
           memory: { type: 'memory' }, 

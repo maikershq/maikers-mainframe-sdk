@@ -118,7 +118,7 @@ interface AgentConfig {
   plugins: PluginConfig[];
 
   // Technical config
-  framework: "elizaOS";
+  framework: "FrameClaw";
   runtime: RuntimeConfig;
 
   // Security

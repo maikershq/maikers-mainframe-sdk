@@ -110,7 +110,7 @@ export function AgentCreator() {
           plugins: ['jupiter-swap'],
           config: { maxSlippage: 1.0 }
         }],
-        framework: 'elizaOS',
+        framework: 'FrameClaw',
         plugins: [],
         runtime: {
           memory: { type: 'memory' },

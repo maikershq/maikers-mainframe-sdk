@@ -13,7 +13,7 @@ Mainframe SDK is a production-ready TypeScript client that provides:
 - **Agent Management**: Create, update, transfer, and monitor AI agents linked to NFTs
 - **Client-Side Encryption**: Zero-knowledge architecture with XChaCha20-Poly1305 AEAD
 - **Storage Integration**: Permanent Arweave storage for metadata
-- **Framework Support**: First-class integration with Anchor, Wallet Adapter, elizaOS, and more
+- **Framework Support**: First-class integration with Anchor, Wallet Adapter, FrameClaw, and more
 - **Production Features**: Rate limiting, circuit breakers, caching, and monitoring
 
 ### SDK Architecture
@@ -269,7 +269,7 @@ const agentConfig: AgentConfig = {
   ],
   
   // Framework and plugins
-  framework: "elizaOS",
+  framework: "FrameClaw",
   plugins: [
     {
       id: "jupiter-swap",

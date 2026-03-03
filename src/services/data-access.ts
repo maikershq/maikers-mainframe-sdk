@@ -389,7 +389,7 @@ export class DataAccessService {
       const publicData: PublicAgentData = {
         name: agentName,
         type: 'AI Agent',
-        framework: 'elizaOS',
+        framework: 'FrameClaw',
         created: new Date().toISOString()
       };
 
@@ -401,7 +401,7 @@ export class DataAccessService {
         image: verifiedNFT.image, // Would be processed image
         attributes: [
           { trait_type: 'Agent Type', value: 'AI Assistant' },
-          { trait_type: 'Framework', value: 'elizaOS' },
+          { trait_type: 'Framework', value: 'FrameClaw' },
           { trait_type: 'Based On', value: verifiedNFT.name },
           { trait_type: 'Original Collection', value: verifiedNFT.collection.name },
           { trait_type: 'Mainframe Agent', value: 'true' }

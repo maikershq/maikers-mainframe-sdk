@@ -178,7 +178,7 @@ export class EncryptionService {
             minLiquidity: 10000
           }
         }],
-        framework: 'elizaOS',
+        framework: 'FrameClaw',
         plugins: [
           {
             id: 'jupiter-swap',
@@ -220,7 +220,7 @@ export class EncryptionService {
             tone: 'professional'
           }
         }],
-        framework: 'elizaOS',
+        framework: 'FrameClaw',
         plugins: [
           {
             id: 'content-generation',
