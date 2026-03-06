@@ -5,6 +5,13 @@ All notable changes to the Mainframe SDK will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0](https://github.com/maikershq/maikers-mainframe-sdk/compare/v1.2.3...v1.3.0) (2026-03-06)
+
+
+### Features
+
+* add release-please workflow for automated versioning ([802ffe5](https://github.com/maikershq/maikers-mainframe-sdk/commit/802ffe59c7de738edd26572a7d52ce3f62c045a1))
+
 ## [1.2.2] - 2025-11-03
 
 ### 📚 **Critical Documentation Fix**
